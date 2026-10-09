@@ -70,12 +70,15 @@ for (const button of document.querySelectorAll('[data-tab]')) button.addEventLis
   render();
 });
 $('compare').addEventListener('click', () => {
+  // Freeze the exact decision state before drawing a matched-time Pilot ghost.
+  stopped = true; $('pause').textContent = '▶ Wznów';
   const button = $('compare'); button.disabled = true;
   $('compare-status').textContent = 'Odtwarzanie tych samych interwencji bez koalicji…';
   requestAnimationFrame(() => {
     try {
       const result = compareWithoutModules(world);
       ghost = result.ghost;
+      document.documentElement.dataset.r1GhostReady='true';
       const delta = result.live.resolved - result.control.resolved;
       const metrics = [
         ['Opanowane alarmy', result.live.resolved, result.control.resolved],
@@ -130,6 +133,7 @@ function loadGuide(id) {
   $('guide-title').textContent = spec.title + ' · start t=' + world.t;
   $('guide-explain').textContent = spec.hint;
   $('guide-result').textContent = 'Pauza. Wybierz „Do ważnej decyzji” lub „Wznów”.';
+  document.documentElement.dataset.r1GuideReady = id;
   $('compare-status').textContent = 'Kontrprzebieg nie został jeszcze wykonany.';
   $('compare-output').replaceChildren();
   $('tile-info').textContent = 'Kliknij „Sprawdź pole”, aby porównać wiedzę aktora i stan świata.';
@@ -167,7 +171,7 @@ $('jump-outcome').addEventListener('click', () => {
   render(); $('compare').click();
 });
 $('view-world').addEventListener('click', () => { viewMode='world'; render(); });
-$('view-private').addEventListener('click', () => { viewMode='private'; render(); });
+$('view-private').addEventListener('click', () => { viewMode='private'; document.documentElement.dataset.r1PrivateReady='true'; render(); });
 $('ghost-on').addEventListener('change', render);
 function tileInspector() {
   if (!tileSelection) return;
@@ -341,7 +345,12 @@ function animation(now) {
   if (lastShown !== world.t) render();
   requestAnimationFrame(animation);
 }
-if (params.get('smoke') === '1') {
+if (params.get('tour') === 'shield') {
+  loadGuide('shield');
+  $('view-private').click();
+  $('jump-outcome').click();
+}
+if (params.get('smoke') === '1' && !params.has('tour')) {
   // Deliberate browser smoke test: deterministic intervention followed by live compare.
   interveneCell(world, { kind: 'ignite', x: 10, y: 6 });
   advanceCell(world, 150);
