@@ -1,4 +1,4 @@
-import { createExperiment, advance, intervene, summary } from "../src/core.mjs";
+import { createExperiment, advance, intervene, summary, ECOLOGIES } from "../src/core.mjs";
 
 // Bounded, reproducible sensitivity probe. These 128 seeds cover only a very
 // narrow hand-authored ecology (two sites and shifted initial restock phases).
@@ -22,8 +22,8 @@ const comparisons = [["habit", "recall"], ["cooldown", "recall"], ["habit", "coo
 const maxTick = 1200;
 const seedCount = 128;
 
-function play(seed, left, right, scenario) {
-  const exp = createExperiment({ seed, left, right });
+function play(seed, left, right, scenario, ecology) {
+  const exp = createExperiment({ seed, left, right, ecology });
   let time = 0;
   for (const event of scenario.events) {
     advance(exp, event.tick - time);
@@ -53,15 +53,16 @@ function stats(rows) {
 const report = {
   protocol: "Cognition Relay/R0 sensitivity sweep; not an independent ecology or model benchmark",
   seedRange: [0, seedCount - 1],
+  ecologies: [...ECOLOGIES],
   tickHorizon: maxTick,
   scenarios: [],
 };
-for (const scenario of scenarios) {
+for (const ecology of ECOLOGIES) for (const scenario of scenarios) {
   const results = [];
   for (const [left, right] of comparisons) {
     const rows = [];
     for (let seed = 0; seed < seedCount; seed++) {
-      const exp = play(seed, left, right, scenario);
+      const exp = play(seed, left, right, scenario, ecology);
       const a = summary(exp.left), b = summary(exp.right);
       rows.push({
         seed,
@@ -77,6 +78,6 @@ for (const scenario of scenarios) {
       positiveExamples: rows.filter(x => x.deliveriesDelta > 0).slice(0, 3).map(x => ({ seed: x.seed, delta: x.deliveriesDelta })),
     });
   }
-  report.scenarios.push({ scenario: scenario.name, interventions: scenario.events, results });
+  report.scenarios.push({ ecology, scenario: scenario.name, interventions: scenario.events, results });
 }
 console.log(JSON.stringify(report, null, 2));
