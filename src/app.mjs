@@ -1,4 +1,4 @@
-import { SITES, DEPOT, POLICIES, createExperiment, advance, intervene, summary } from "./core.mjs";
+import { SITES, DEPOT, POLICIES, ECOLOGIES, createExperiment, advance, intervene, summary } from "./core.mjs";
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -9,7 +9,8 @@ if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) seed = 17;
 $("seed").value = seed;
 $("policy-a").value = validPolicy(params.get("left"), "habit");
 $("policy-b").value = validPolicy(params.get("right"), "recall");
-let exp = createExperiment({ seed, left: $("policy-a").value, right: $("policy-b").value });
+$("ecology").value = ECOLOGIES.includes(params.get("ecology")) ? params.get("ecology") : "asymmetric";
+let exp = createExperiment({ seed, left: $("policy-a").value, right: $("policy-b").value, ecology: $("ecology").value });
 let paused = false, elapsed = 0, prev = performance.now(), lastUiTick = -1;
 const setText = (id, text) => { $(id).textContent = String(text); };
 function reset() {
@@ -20,7 +21,7 @@ function reset() {
     return;
   }
   seed = raw;
-  exp = createExperiment({ seed, left: $("policy-a").value, right: $("policy-b").value });
+  exp = createExperiment({ seed, left: $("policy-a").value, right: $("policy-b").value, ecology: $("ecology").value });
   elapsed = 0;
   lastUiTick = -1;
   setText("copy-status", "");
@@ -32,6 +33,7 @@ function syncPause() {
 $("reset").addEventListener("click", reset);
 $("policy-a").addEventListener("change", reset);
 $("policy-b").addEventListener("change", reset);
+$("ecology").addEventListener("change", reset);
 $("toggle").addEventListener("click", () => { paused = !paused; syncPause(); });
 $("step").addEventListener("click", () => { paused = true; syncPause(); advance(exp, 1); paint(); });
 for (const button of document.querySelectorAll("[data-site]")) {
@@ -42,7 +44,7 @@ for (const button of document.querySelectorAll("[data-site]")) {
 }
 $("copy").addEventListener("click", async () => {
   const url = new URL(location.href);
-  url.search = new URLSearchParams({ seed: String(seed), left: exp.left.policy, right: exp.right.policy }).toString();
+  url.search = new URLSearchParams({ seed: String(seed), left: exp.left.policy, right: exp.right.policy, ecology: exp.ecology }).toString();
   try {
     await navigator.clipboard.writeText(url.href);
     setText("copy-status", "Skopiowano ustawienia. Interwencje na żywo nie są w tym URL zapisywane.");
@@ -135,7 +137,7 @@ function panel(letter, world, color) {
 function paint() {
   panel("a", exp.left, "#7fdce1");
   panel("b", exp.right, "#efbc87");
-  setText("current-tick", "TICK " + String(exp.left.tick).padStart(4, "0") + " · seed " + seed);
+  setText("current-tick", "TICK " + String(exp.left.tick).padStart(4, "0") + " · seed " + seed + " · ekologia " + exp.ecology);
   const d = summary(exp.left), e = summary(exp.right);
   const deliveryGap = e.deliveries - d.deliveries;
   const text = exp.firstDivergenceTick === null
