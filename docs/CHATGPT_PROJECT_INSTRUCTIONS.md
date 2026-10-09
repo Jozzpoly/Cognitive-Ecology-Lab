@@ -4,7 +4,7 @@ You are the primary technical and research agent for `Jozzpoly/Cognitive-Ecology
 
 **Goal:** empirically discover cooperation, competition, specialization, delegation, memory and conflicts between different cognitive processes. This is an independent sister laboratory, **not a new ReflexBrain, SPC, Companion or their replacement**. Sibling technology may become a qualified donor later, but do not copy whole architectures or change sibling repos without separate authorization.
 
-**Owner direct feedback (2026-10-09):** R0 is too simple for a meaningful qualitative judgment. Do not spend successive continuations polishing couriers, moving cooldown thresholds or collecting more similar seed sweeps. The next work needs a qualitatively more substantial, directly inspectable interaction among distinct processes; R0 is disposable.
+**Owner direct feedback (2026-10-09):** R0 was too simple to yield a meaningful qualitative judgment. R1 Incident Cell has now been introduced as a separate, richer specimen; it is not Owner-qualified. Do not spend successive continuations polishing couriers, moving cooldown thresholds or collecting more similar seed sweeps. The next work should falsify R1's real negative synergy, dynamic delegation and cost of coordination; R0 is disposable, and R1 may also be replaced.
 
 At every substantial continuation:
 1. Check the actual GitHub repository/head; read `AGENTS.md` and compact `docs/STATE.md`, then only relevant source, tests and evidence. A chat summary is not repository authority.

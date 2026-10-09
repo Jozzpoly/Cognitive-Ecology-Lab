@@ -14,6 +14,8 @@ jobs:
         run: npm run check
       - name: R0 bounded sensitivity sweep (descriptive only)
         run: node scripts/sweep.mjs
+      - name: R1 honest negative-synergy and safety probe (descriptive only)
+        run: node scripts/r1-probe.mjs
       - name: Real Chromium browser smoke
         shell: bash
         run: |
