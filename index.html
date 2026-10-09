@@ -61,6 +61,16 @@
       <button data-site="east" data-action="drain">Opróżnij wschód</button><button data-site="east" data-action="fill">Uzupełnij wschód</button>
     </div>
   </section>
+  <section class="audit" id="research-audit">
+    <div class="section-head">
+      <p class="eyebrow">RESEARCH / CONTRAST BENCH</p>
+      <h2>Co, jeśli doradca zacznie przeszkadzać?</h2>
+      <p>Uruchom oddzielne, szybkie porównanie pamięci z prostym cooldownem w czterech ekologach. Wynik nie zakłóca światów A/B powyżej. Dane z 16 ziaren × 5 zakłóceń na ekologię; rezultat jest poglądowy.</p>
+    </div>
+    <button id="run-audit">Przetestuj kontrświaty</button>
+    <p id="audit-status" class="technical" aria-live="polite">Niewykonane w tej sesji</p>
+    <div class="audit-output" id="audit-output"></div>
+  </section>
   <section class="inspector">
     <div class="inspector-info"><p class="eyebrow">CAUSAL COMPARISON</p><h2>Nie każdy rozjazd to postęp.</h2><p id="difference">Porównywanie pierwszej rozbieżności…</p><p id="current-tick" class="technical">TICK 0000</p></div>
     <div class="inspector-info"><p class="eyebrow">EXPERIMENT SCOPE</p><p class="narrative">Oba światy startują tak samo. Z czasem decyzje mogą zmieniać ich osobne zasoby. Liczby i kolory na mapie pokazują <strong>wiedzę badacza</strong>, nie percepcję aktora. „Doradca” jest ręcznie napisany — żadnych fikcyjnych odpowiedzi LLM.</p><button id="copy" class="subtle">Kopiuj URL z ustawieniami</button><p id="copy-status" class="technical" aria-live="polite"></p></div>
