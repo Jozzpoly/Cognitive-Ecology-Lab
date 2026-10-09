@@ -38,3 +38,5 @@ jobs:
           node scripts/assert-r1-dom.mjs /tmp/cel-r1.html
           "$chrome" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --disable-background-networking --virtual-time-budget=6000 --dump-dom "http://127.0.0.1:4173/?tour=shield" > /tmp/cel-r1-tour.html 2>/tmp/cel-chrome-tour.log || { cat /tmp/cel-chrome-tour.log; exit 1; }
           node scripts/assert-r1-dom.mjs /tmp/cel-r1-tour.html --tour
+          "$chrome" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --disable-background-networking --virtual-time-budget=6500 --dump-dom "http://127.0.0.1:4173/?tour=shield&replaySmoke=1" > /tmp/cel-r1-replay.html 2>/tmp/cel-chrome-replay.log || { cat /tmp/cel-chrome-replay.log; exit 1; }
+          node scripts/assert-r1-dom.mjs /tmp/cel-r1-replay.html --tour --replay
