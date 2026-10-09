@@ -22,3 +22,10 @@ if(process.argv.includes('--tour')){
   assert.ok(html.includes('Strażnik kontra ogień'),'guided challenge title is not rendered');
   console.log('R1 guided tour PASS — guardian case, private view and matched Pilot ghost');
 }
+
+if(process.argv.includes('--replay')){
+  assert.match(html, /<html\b[^>]*data-r1-replay-ready="true"/i,
+    'R1 action export → browser replay did not match its original counters');
+  assert.ok(html.includes('Odtwarzanie PASS'),'Owner notebook did not report a verified replay');
+  console.log('R1 session notebook PASS — browser export and exact counter replay');
+}
