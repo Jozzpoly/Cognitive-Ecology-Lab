@@ -1,4 +1,5 @@
 import { WIDTH, HEIGHT, BASE, createCell, advanceCell, interveneCell, compareWithoutModules, summaryCell } from './r1-core.mjs';
+import { GUIDES, buildGuide } from './r1-guides.mjs';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -15,14 +16,27 @@ let acc = 0;
 let previous = performance.now();
 let lastShown = -1;
 let activeTab = 'timeline';
+let activeGuide = null, viewMode = 'world', ghost = null, tileSelection = null;
 $('seed').value = String(seed);
 const canvas = $('arena'), ctx = canvas.getContext('2d');
 
+function invalidateComparison() {
+  if (!ghost) return;
+  ghost = null;
+  $('compare-status').textContent = 'Świat zmienił się po porównaniu — przelicz kontrprzebieg.';
+  $('compare-output').replaceChildren();
+  document.documentElement.dataset.r1CompareReady = 'false';
+}
 function begin() {
   const next = Number($('seed').value);
   if (!Number.isInteger(next) || next < 0 || next > 4294967295) {
     $('seed').value = String(world.seed); return;
   }
+  activeGuide = null; ghost = null; tileSelection = null;
+  for (const button of document.querySelectorAll('[data-guide]')) button.classList.remove('selected');
+  $('guide-title').textContent = 'Tryb swobodny — wybierz scenariusz powyżej';
+  $('guide-explain').textContent = 'Cel: patrz, który proces i dlaczego zmienił ruch.';
+  $('guide-result').textContent = '';
   world = createCell({ seed: next, mode: $('mode').value,
     modules: { dispatch: $('dispatch-on').checked, planner: $('planner-on').checked, guardian: $('guardian-on').checked } });
   lastShown = -1;
@@ -32,18 +46,19 @@ function begin() {
   render();
 }
 $('reset').addEventListener('click', begin);
-$('mode').addEventListener('change', () => { world.mode = $('mode').value; render(); });
+$('mode').addEventListener('change', () => { invalidateComparison(); world.mode = $('mode').value; render(); });
 for (const module of ['dispatch', 'planner', 'guardian']) {
   $(module + '-on').addEventListener('change', () => {
+    invalidateComparison();
     world.modules[module] = $(module + '-on').checked;
     world.logs.push({ t: world.t, type: 'system', text: module + (world.modules[module] ? ' włączony' : ' odłączony'), detail: 'Konfiguracja zmieniona podczas działania' });
     render();
   });
 }
 $('pause').addEventListener('click', () => { stopped = !stopped; $('pause').textContent = stopped ? '▶ Wznów' : 'Ⅱ Pauza'; });
-$('step').addEventListener('click', () => { stopped = true; $('pause').textContent = '▶ Wznów'; advanceCell(world, 1); render(); });
+$('step').addEventListener('click', () => { stopped = true; $('pause').textContent = '▶ Wznów'; invalidateComparison(); advanceCell(world, 3); render(); });
 $('speed').addEventListener('change', () => { speed = Number($('speed').value); });
-$('jam').addEventListener('click', () => { interveneCell(world, { kind: 'jam' }); render(); });
+$('jam').addEventListener('click', () => { invalidateComparison(); interveneCell(world, { kind: 'jam' }); render(); });
 for (const button of document.querySelectorAll('[data-tool]')) button.addEventListener('click', () => {
   tool = button.dataset.tool;
   for (const b of document.querySelectorAll('[data-tool]')) b.classList.toggle('selected', b === button);
@@ -60,6 +75,7 @@ $('compare').addEventListener('click', () => {
   requestAnimationFrame(() => {
     try {
       const result = compareWithoutModules(world);
+      ghost = result.ghost;
       const delta = result.live.resolved - result.control.resolved;
       const metrics = [
         ['Opanowane alarmy', result.live.resolved, result.control.resolved],
@@ -80,6 +96,7 @@ $('compare').addEventListener('click', () => {
       $('compare-output').replaceChildren(table);
       $('compare-status').textContent = `Tick ${world.t} · ${result.eventCount} interwencji w identycznych chwilach · Δ opanowanych: ${delta >= 0 ? '+' : ''}${delta}. To ograniczone porównanie, nie dowód przewagi AI.`;
       document.documentElement.dataset.r1CompareReady = 'true';
+      render();
     } catch (e) { $('compare-status').textContent = 'Porównanie nie powiodło się: ' + e.message; }
     button.disabled = false;
   });
@@ -91,9 +108,94 @@ canvas.addEventListener('click', event => {
   const x = Math.floor((event.clientX - rect.left - ox) / scale);
   const y = Math.floor((event.clientY - rect.top - oy) / scale);
   if (x < 0 || y < 0 || x >= WIDTH || y >= HEIGHT) return;
-  interveneCell(world, { kind: tool, x, y });
+  if (tool === 'inspect') { tileSelection = {x,y}; render(); return; }
+  invalidateComparison(); interveneCell(world, { kind: tool, x, y });
   render();
 });
+
+
+const scenarioById = id => GUIDES.find(g => g.id === id);
+function loadGuide(id) {
+  const spec = scenarioById(id);
+  if (!spec) return;
+  const proposedSeed = Number($('seed').value);
+  const nextSeed = Number.isInteger(proposedSeed) && proposedSeed >= 0 && proposedSeed <= 4294967295 ? proposedSeed : 19;
+  world = buildGuide(id, { seed: nextSeed });
+  activeGuide = id; ghost = null; tileSelection = null; acc = 0; lastShown = -1;
+  stopped = true;
+  $('pause').textContent = '▶ Wznów';
+  $('mode').value = 'coalition';
+  for (const module of ['dispatch','planner','guardian']) $(module + '-on').checked = true;
+  for (const button of document.querySelectorAll('[data-guide]')) button.classList.toggle('selected',button.dataset.guide === id);
+  $('guide-title').textContent = spec.title + ' · start t=' + world.t;
+  $('guide-explain').textContent = spec.hint;
+  $('guide-result').textContent = 'Pauza. Wybierz „Do ważnej decyzji” lub „Wznów”.';
+  $('compare-status').textContent = 'Kontrprzebieg nie został jeszcze wykonany.';
+  $('compare-output').replaceChildren();
+  $('tile-info').textContent = 'Kliknij „Sprawdź pole”, aby porównać wiedzę aktora i stan świata.';
+  render();
+}
+for (const button of document.querySelectorAll('[data-guide]')) {
+  button.addEventListener('click', () => loadGuide(button.dataset.guide));
+}
+$('guide-free').addEventListener('click', () => {
+  $('mode').value = 'coalition'; begin(); stopped = true; $('pause').textContent = '▶ Wznów'; render();
+});
+$('next-event').addEventListener('click', () => {
+  stopped = true; $('pause').textContent = '▶ Wznów'; invalidateComparison();
+  const focus = activeGuide ? scenarioById(activeGuide).focus : null;
+  const signals = new Set(['veto','refused','damage','blocked','success']);
+  let found = null;
+  for (let tick = 0; tick < 180; tick++) {
+    const old = world.logs.length ? world.logs[world.logs.length - 1] : null;
+    advanceCell(world, 1);
+    const latest = world.logs[world.logs.length - 1];
+    if (latest && latest !== old && signals.has(latest.type) && (!focus || latest.type === focus || latest.type === 'success')) {
+      found = latest; break;
+    }
+  }
+  $('guide-result').textContent = found ? ('Zatrzymano t=' + world.t + ': ' + found.text) :
+    ('Po 180 tickach brak szukanego zdarzenia. Spróbuj ponownie albo zmień warunki.');
+  render();
+});
+$('jump-outcome').addEventListener('click', () => {
+  if (!activeGuide) { $('guide-result').textContent = 'Najpierw wybierz gotowy scenariusz.'; return; }
+  stopped = true; $('pause').textContent = '▶ Wznów'; invalidateComparison();
+  const at = scenarioById(activeGuide).endTick;
+  if (world.t < at) advanceCell(world, at - world.t);
+  $('guide-result').textContent = 'Osiągnięto tick ' + world.t + '. Uruchamiam porównanie ze sprawnym Pilotem…';
+  render(); $('compare').click();
+});
+$('view-world').addEventListener('click', () => { viewMode='world'; render(); });
+$('view-private').addEventListener('click', () => { viewMode='private'; render(); });
+$('ghost-on').addEventListener('change', render);
+function tileInspector() {
+  if (!tileSelection) return;
+  const {x,y} = tileSelection, k = x+','+y;
+  const isSeen = world.known.clear.has(k) || world.known.walls.has(k);
+  const seen = world.known.heat.get(k);
+  const wall = world.walls.has(k);
+  const hazard = world.hazards.some(h => Math.abs(h.x-x)+Math.abs(h.y-y) <= h.radius && h.power >= 2);
+  const age = seen ? world.t - seen.seen : null;
+  $('tile-info').textContent = 'Pole '+k+' · Prawda: '+(wall?'ściana':'przejście')+(hazard?', zagrożenie':'')+
+    ' · Wiedza wykonawcy: '+(!isSeen ? 'NIEZNANE' : (world.known.walls.has(k) ? 'widziana ściana' : 'widziane przejście'))+
+    (age!==null ? (' · ostatni odczyt '+age+' ticków temu'+(seen.power>=2?', widziano ogień':'')) : '');
+}
+function decisionInspector() {
+  const b = world.cognition.broker.last;
+  if (!b) { $('decision-why').textContent = 'Czekamy na pierwszą decyzję Pilota (co 3 ticki).'; return; }
+  const moduleOn = n => world.mode==='coalition'&&world.modules[n];
+  const words = [
+    'Tick '+b.t+' → alarm #'+b.targetId+'.',
+    'Pilot: '+(b.pilotTargetId===null?'bez celu':('#'+b.pilotTargetId))+
+      (b.pilotStep ? (' · proponowany krok '+b.pilotStep.x+','+b.pilotStep.y) : ' · bez kroku')+'.',
+    'Dyspozytor: '+(moduleOn('dispatch') ? ('propozycja #'+(b.dispatchTargetId ?? '—')) : 'wyłączony')+'.',
+    'Kartograf: '+(moduleOn('planner') ? ('trasa #'+(b.plannerTargetId ?? 'brak aktualnej')) : 'wyłączony')+'.',
+    'Strażnik: '+(moduleOn('guardian') ? (b.guardianVeto?'VETO, wymusił zmianę':'nie zawetował') : 'wyłączony')+'.',
+    'Ostatecznie: '+b.winner+(b.step ? (' → '+b.step.x+','+b.step.y) : ' · postój')+'.',
+  ];
+  $('decision-why').textContent = words.join(' ');
+}
 
 function text(id, value) { $(id).textContent = String(value); }
 function drawing() {
@@ -113,12 +215,18 @@ function drawing() {
     const k = `${x},${y}`;
     ctx.fillStyle = (x + y) % 2 === 0 ? '#142438' : '#17283b';
     ctx.fillRect(px(x) + 1, py(y) + 1, scale - 2, scale - 2);
-    if (world.walls.has(k)) {
+    if (world.walls.has(k) && (viewMode === 'world' || world.known.walls.has(k))) {
       ctx.fillStyle = '#3f5063'; ctx.fillRect(px(x) + 3, py(y) + 3, scale - 6, scale - 6);
       ctx.strokeStyle = '#61778d'; ctx.lineWidth = 1; ctx.strokeRect(px(x) + 3, py(y) + 3, scale - 6, scale - 6);
     }
+    if (viewMode === 'private' && !world.known.clear.has(k) && !world.known.walls.has(k)) {
+      ctx.fillStyle = '#060b14ec';ctx.fillRect(px(x)+1,py(y)+1,scale-2,scale-2);
+    }
   }
-  for (const heat of world.hazards) {
+  const shownHeat = viewMode === 'world' ? world.hazards :
+    [...world.known.heat].filter(([,v])=>v.power >= 2 && world.t-v.seen <= 35)
+      .map(([cell,v])=>{const [x,y]=cell.split(',').map(Number);return {x,y,radius:0,power:v.power};});
+  for (const heat of shownHeat) {
     const cx = px(heat.x + .5), cy = py(heat.y + .5);
     const radius = (heat.radius + .7) * scale;
     const g = ctx.createRadialGradient(cx, cy, scale * .12, cx, cy, radius);
@@ -132,6 +240,11 @@ function drawing() {
     world.cognition.planner.route.path.forEach((p, i) => {
       if (i === 0) ctx.moveTo(px(p.x + .5), py(p.y + .5)); else ctx.lineTo(px(p.x + .5), py(p.y + .5));
     }); ctx.stroke(); ctx.setLineDash([]);
+  }
+  if (ghost && $('ghost-on').checked) {
+    ctx.strokeStyle='#f7bc85b0';ctx.lineWidth=Math.max(2,scale*.09);ctx.setLineDash([scale*.12,scale*.15]);
+    ctx.beginPath();ghost.trail.forEach((p,i)=>{if(i===0)ctx.moveTo(px(p.x+.5),py(p.y+.5));else ctx.lineTo(px(p.x+.5),py(p.y+.5));});ctx.stroke();ctx.setLineDash([]);
+    ctx.strokeStyle='#f7bc85';ctx.lineWidth=3;ctx.strokeRect(px(ghost.actor.x)+4,py(ghost.actor.y)+4,scale-8,scale-8);
   }
   ctx.strokeStyle = '#91f2d55e'; ctx.lineWidth = Math.max(2, scale * .055);
   ctx.beginPath(); world.actor.trace.forEach((p, i) => {
@@ -169,7 +282,7 @@ function drawing() {
   ctx.strokeStyle = '#91f2d51b'; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.arc(x, y, 3 * scale, 0, Math.PI * 2); ctx.stroke();
   ctx.textAlign = 'left'; ctx.fillStyle = '#95abc0'; ctx.font = `bold ${Math.max(9, scale * .18)}px ui-monospace,monospace`;
-  ctx.fillText('WORLD / OBSERVER VIEW', px(.4), py(.6));
+  ctx.fillText(viewMode === 'world' ? 'WORLD / OBSERVER VIEW' : 'PRIVATE / OBSERVED + STALE', px(.4), py(.6));
   ctx.textAlign = 'right'; ctx.fillText(`T=${world.t}`, px(18.7), py(.6));
 }
 function logPanel() {
@@ -210,6 +323,10 @@ function render() {
   text('signals', world.incidents.length + ' alarmów w terenie');
   text('pending', world.cognition.planner.pending.length + ' plan(ów) w drodze');
   text('jam-status', world.jamUntil > world.t ? `Łączność zakłócona przez ${world.jamUntil - world.t} ticków` : 'Łączność aktywna');
+  $('view-world').classList.toggle('selected',viewMode==='world');
+  $('view-private').classList.toggle('selected',viewMode==='private');
+  $('view-description').textContent = viewMode==='world' ? 'Widzisz pełną prawdę symulacji — procesy NIE mają takiej wiedzy.' : 'Nieznane pola są zasłonięte. Ogień to tylko świeży zapis zmysłowy, nie wszechwiedza.';
+  tileInspector(); decisionInspector();
   document.documentElement.dataset.r1Ready = 'true';
   document.documentElement.dataset.r1Tick = String(world.t);
   drawing(); logPanel(); lastShown = world.t;
@@ -219,7 +336,7 @@ function animation(now) {
   if (!stopped) {
     acc += delta * speed;
     let n = Math.min(35, Math.floor(acc / 100));
-    if (n > 0) { advanceCell(world, n); acc -= n * 100; }
+    if (n > 0) { invalidateComparison(); advanceCell(world, n); acc -= n * 100; }
   }
   if (lastShown !== world.t) render();
   requestAnimationFrame(animation);
