@@ -6,7 +6,7 @@ Updated **2026-10-09**. **Authority:** live `main`, exact CI output and public b
 
 - **R1 Incident Cell:** a new, independent interactive specimen with one World and four **authored logical** mechanisms: cheap local Pilot (tick clock 3), Dispatcher (clock 11), Cartographer (snapshot 23, delayed answer 7–11), Guardian (immediate local veto). Broker arbitrates contested actuation. Dynamic incidents, timed deadlines, seeded environmental hazards, walls, blackout/jam injection and runtime module ablations.
 - **No model API or learned cognitive system has been integrated.** These are different authored mechanisms and *simulated* asynchronous cognition, not true parallel workers nor independent Jev/Clef/Luna/ReflexBrain minds. No borrowed runtime from sibling projects.
-- **Scoped source verification:** branch `work/r1-incident-cell` Check [#37973178938](https://github.com/Jozzpoly/Cognitive-Ecology-Lab/actions/runs/37973178938) qualified 21/21 unit tests (R0+R1), R0 scientific sweep, two R0 Chromium boot/audit tests and a new R1 Chromium simulation/intervention/counterfactual test. Exact merged and published `main` SHA must be confirmed after integration; older receipts don't automatically qualify later edits.
+- **Qualified and published source:** [main `a5cc41b339eeea1800588643df44a1ed82ad286d`](https://github.com/Jozzpoly/Cognitive-Ecology-Lab/commit/a5cc41b339eeea1800588643df44a1ed82ad286d) · [Check #37973567083](https://github.com/Jozzpoly/Cognitive-Ecology-Lab/actions/runs/37973567083) PASS: **21/21 tests**, R0 sweep, R1 negative-synergy/safety probe and R0+R1 real Chromium browser smokes · [automatic Pages release #37973612396](https://github.com/Jozzpoly/Cognitive-Ecology-Lab/actions/runs/37973612396): public `build.json` independently confirmed matching exact source SHA; successful actual deploy.
 - **No Owner R1 experiential qualification.** Owner tested R0 on 2026-10-09 and said it was too simple to give useful feedback. R0 is preserved separately at `/r0.html`; current R1 is an explicitly *larger* but still very limited experimental prototype.
 
 ## Contradictory causal evidence (feature, not embarrassment)
@@ -28,4 +28,4 @@ R0/F1 found recall beats cooldown in one ecology and loses in another; in abunda
 
 `npm run check` · `npm run dev` · [R1 method](EXPERIMENT_002.md) · [Donors](DONORS.md) · [Publish receipts](PUBLISH.md) · [AGENTS](../AGENTS.md).
 
-**Statuses:** R0 machine PASS / Owner R0 NOT JUDGEABLE · R1 machine PASS / Owner R1 NOT TESTED · multi-model real cognition NOT IMPLEMENTED.
+**Statuses:** R0 machine PASS / Owner R0 NOT JUDGEABLE · R1 machine PASS / Owner R1 NOT TESTED · real multi-model cognition NOT IMPLEMENTED.

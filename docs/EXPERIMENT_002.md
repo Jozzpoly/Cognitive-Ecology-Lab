@@ -38,3 +38,7 @@ These are *correlated narrow variations of this one authored layout*, not 80 ind
 - Logged suggestions are explicit, authored algorithm results. No provider output is faked.
 - The world is still deliberately small and may remain **not Owner-judgeable** despite qualitative growth.
 - The immediate scientific question is **where coordination overhead outweighs specialization**, not how to make R1 look good.
+
+## Verified merged-source receipt
+
+GitHub Actions [Check #37973567083](https://github.com/Jozzpoly/Cognitive-Ecology-Lab/actions/runs/37973567083) on merged exact source `a5cc41b339eeea1800588643df44a1ed82ad286d` executed 21/21 tests, the reproducible 40-seed R1 probe and live Chromium replay smoke. R1 probe JSON matched the narrow figures above. Public automatic Pages preview [#37973612396](https://github.com/Jozzpoly/Cognitive-Ecology-Lab/actions/runs/37973612396) served a matching `build.json`, verified externally. Deployment is **not** Owner approval.
