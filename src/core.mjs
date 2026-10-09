@@ -55,7 +55,7 @@ export function recallAdvice(view) {
     }
     return { siteId: site.id, score: -travel + estimate, support: latest?.id ?? null };
   });
-  rankings.sort((a, b) => b.score - a.score || a.siteId.localeCompare(b.siteId));
+  rankings.sort((a, b) => b.score - a.score);
   return { preferred: rankings[0].siteId, rankings };
 }
 
@@ -89,7 +89,7 @@ function chooseSite(world) {
       ...r, score: r.score - (r.siteId === a.skipOnce ? 1000 : 0),
     }));
   }
-  ranked.sort((a, b) => b.score - a.score || a.siteId.localeCompare(b.siteId));
+  ranked.sort((a, b) => b.score - a.score);
   const chosen = ranked[0];
   a.target = chosen.siteId;
   a.decisions.push({ tick: world.tick, target: chosen.siteId, reason, support: chosen.support });
