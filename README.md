@@ -1,33 +1,31 @@
 # Cognitive Ecology Lab
 
-**Experimental laboratory of cooperation, competition and specialization between cognitive processes.**
+**Research on causal interactions, cooperation, conflict and specialization among cognitive processes.** An independent sister to ReflexBrain, SPC, Companion and Medium — not their replacement or a shared organism architecture.
 
-This is **not ReflexBrain 2**, another LLM-driven NPC, or a replacement for the existing research projects. It studies whether interacting cognitive mechanisms create observable advantages, pathologies or new capabilities compared with the same mechanisms working alone.
+## Current experiment — R1 Incident Cell
 
-**Current qualification:** R0 mechanics tested, but Owner (2026-10-09) found the actual experiment too simple to judge. This is a disposable research calibration and **does not yet demonstrate cooperation among independent cognitive processes**. [Recover live state and next frontier](docs/STATE.md).
+**[Open the interactive working preview](https://jozzpoly.github.io/Cognitive-Ecology-Lab/)** · [R1 protocol](docs/EXPERIMENT_002.md) · [Live state](docs/STATE.md)
 
-## First executable specimen — Cognition Relay / Supply Ecology
+One rover, one changing grid-world, urgent incidents, interactive fires and barriers. Four differently clocked authored components compete/cooperate over one actuator: Pilot (cheap local), Dispatcher (prioritization), Cartographer (delayed partial-world planning), Guardian (local safety veto). The broker admits or rejects their output. Disable modules during live action, jam advice, or replay the same timed interventions against a competent local-only baseline.
 
-Two independently continuing toy-worlds begin from the same deterministic seed. A local courier collects and delivers resources while supply sites independently replenish. The left and right participants may use different decision policies: a minimal local baseline, a simple finite cooldown, or the same local baseline advised by a *synchronous deterministic episodic-recall helper*. The last is a hand-authored reference mechanism, **not Jev, ReflexBrain, a learned model or an LLM**.
+**Important:** All mechanisms are hand-authored deterministic algorithms, not parallel OS workers, Jev, Clef, ReflexBrain, Luna or learned cognition. Clock delay is simulated inside one JS loop. CI PASS is not an Owner qualitative PASS. Negative synergy is an important result, not a defect to disguise.
 
-Compare deliveries, empty trips, travel, advisory activity and traces. Intervene in both worlds, repeat with the same seed, or disable the advisor. The toy-world is a replaceable experimental carrier, **not a claimed organism**.
+## Preserved R0 — Cognition Relay / Supply Ecology
 
-**Public working preview:** https://jozzpoly.github.io/Cognitive-Ecology-Lab/ — automatically deploys only from green current `main` with an exact commit receipt (`build.json`). Publication is **not** Owner or scientific acceptance. See [publication contract](docs/PUBLISH.md). Locally run `npm run dev` (Node 22+), then `npm run check`.
+[Open the preserved R0 courier experiment](https://jozzpoly.github.io/Cognitive-Ecology-Lab/r0.html) · [R0 scoped counterexample](docs/R0_FINDING_2026-10-09.md) · [Method](docs/EXPERIMENT_001.md).
 
-**Owner microscope:** choose an ecological regime (east-rich / west-rich / balanced / abundant), modify the World while both policies run, then use **Przetestuj kontrświaty** for an independent bounded sensitivity comparison. Scientific counterexample: [R0/F1](docs/R0_FINDING_2026-10-09.md). The original two-world UI and batch probe are disposable carriers, not organism architecture.
+Owner judged R0 too simple to meaningfully assess (2026-10-09). R0 remains a reproducible comparison donor, not the canonical organism or direction of R1.
 
-## Project truth and boundaries
+## Run and qualification
 
-- `main`: current runnable source and documentation, **not** an Owner-qualified scientific result.
-- `docs/STATE.md`: short, maintained state and next action, linked to exact code/evidence.
-- `docs/EXPERIMENT_001.md`: first hypothesis, controls, confounds and falsifiers.
-- `docs/DONORS.md`: source-bound donor candidates; no speculative wholesale imports.
-- `AGENTS.md`: lightweight operating contract for continuing agents.
+```sh
+npm run dev    # Node 22+, local static server at http://127.0.0.1:4173
+npm run check  # Node tests and source syntax; CI adds headless Chromium
+node scripts/r1-probe.mjs  # limited R1 outcome comparison
+```
 
-**Evidence hierarchy:** actual running source / exact SHA and measured tests; direct Owner-experienced quality for product claims; scoped science receipts; current docs; old chats and other repos as clues. Never promote machine green into a claim of life, learning or Owner acceptance.
+`main` holds a runnable laboratory, **not** Owner-scientifically qualified results. [CI](https://github.com/Jozzpoly/Cognitive-Ecology-Lab/actions/workflows/check.yml) runs on each commit; [auto-preview](docs/PUBLISH.md) publishes a successful current-`main` commit with an exact `build.json` source receipt. Publishing does not imply acceptance.
 
-### Relationship to sibling labs and Medium
+Project rules: [AGENTS.md](AGENTS.md). Donor candidates: [docs/DONORS.md](docs/DONORS.md). Current compact research authority: [docs/STATE.md](docs/STATE.md).
 
-ReflexBrain keeps ownership of research into cheap actor-private learned meaning. SPC keeps resident/world/personhood questions. Companion keeps teamwork, while Medium keeps its own shared-work substrate. This lab is free to investigate *interactions between cognition mechanisms* and can later import qualified donor capabilities through explicit receipts. Its GitHub links, pinned commits and readable evidence are sufficient for initial discoverability; there is no runtime dependency on Medium.
-
-License has **not** been selected; absence of a license is not permission to copy or redistribute code from sibling or third-party projects.
+No license has been selected. No source or assets were copied from sibling projects. No paid model API usage.

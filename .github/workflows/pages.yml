@@ -56,7 +56,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p dist/docs
-          cp index.html dist/
+          cp index.html r0.html r1.html dist/
           cp -R src dist/src
           cp docs/*.md dist/docs/
           printf '{"sha":"%s","run":"%s","status":"research-preview-not-owner-qualified"}\n' "$SOURCE_SHA" "$GITHUB_RUN_ID" > dist/build.json
