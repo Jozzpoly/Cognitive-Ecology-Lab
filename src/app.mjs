@@ -146,6 +146,8 @@ function paint() {
       " pustych wypraw. To opis obserwacji, nie ocena jakości modelu.";
   setText("difference", text);
   lastUiTick = exp.left.tick;
+  document.documentElement.dataset.runtimeReady = "true";
+  document.documentElement.dataset.simTick = String(exp.left.tick);
 }
 function frame(now) {
   const dt = Math.min(250, now - prev);
