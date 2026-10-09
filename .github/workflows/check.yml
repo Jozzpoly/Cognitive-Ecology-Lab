@@ -12,6 +12,8 @@ jobs:
           node-version: '22'
       - name: Headless / deterministic tests
         run: npm run check
+      - name: R0 bounded sensitivity sweep (descriptive only)
+        run: node scripts/sweep.mjs
       - name: Real Chromium browser smoke
         shell: bash
         run: |
