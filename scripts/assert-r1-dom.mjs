@@ -9,7 +9,12 @@ assert.match(html,/<html\b[^>]*data-r1-compare-ready="true"/i,'R1 causal replay 
 for(const id of ['arena','planner-on','guardian-on','dispatch-on','planner-accepted','guardian-veto','compare-output']){
  assert.ok(html.includes('id="'+id+'"'),'R1 missing interactive control '+id);
 }
-assert.ok(html.includes('Opanowane alarmy'),'R1 replay output table missing');
+if(!html.includes('Opanowane alarmy')){
+  const i=html.indexOf('id="compare-output"');
+  const j=html.indexOf('id="compare-status"');
+  throw new Error('R1 replay output table missing. compareDOM='+html.slice(i,i+700)+
+    ' status='+html.slice(j,j+260)+' compareReady='+(html.match(/data-r1-compare-ready="([^"]*)"/)?.[1]||'n/a'));
+}
 console.log('R1 browser smoke PASS — tick='+tick[1]+'; live modules, canvas, legal perturbation and local counterfactual');
 
 if(process.argv.includes('--tour')){
