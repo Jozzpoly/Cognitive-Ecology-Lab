@@ -13,3 +13,12 @@ for (const id of ["world-a", "world-b", "deliveries-a", "deliveries-b", "differe
   assert.ok(html.includes('id="' + id + '"'), "missing browser DOM element " + id);
 }
 console.log("Browser smoke PASS — initialized; tick=" + tick[1] + "; dual canvas + comparison present");
+
+if (process.argv.includes("--audit")) {
+  assert.match(html, /<html\b[^>]*data-audit-complete="true"/i,
+    "browser did not complete the scientific sensitivity audit");
+  for (const label of ["Bogatszy wschód", "Bogatszy zachód", "Równe zasoby", "Obfite zasoby"]) {
+    assert.ok(html.includes(label), "audit output missing ecology label: " + label);
+  }
+  console.log("Browser sensitivity console PASS — all four ecology rows");
+}
