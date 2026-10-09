@@ -414,6 +414,17 @@ if (params.get('tour') === 'shield') {
   $('view-private').click();
   $('jump-outcome').click();
 }
+if (params.get('replaySmoke') === '1') {
+  // Browser-integrated exercise: export the actual action chronology and replay it
+  // through the same validation path used by Owner's pasted session.
+  (async () => {
+    const pack = await captureSession();
+    $('session-data').value = JSON.stringify(pack);
+    $('import-session').click();
+    document.documentElement.dataset.r1ReplayReady =
+      $('session-status').textContent.includes('PASS') ? 'true' : 'false';
+  })().catch(()=>{document.documentElement.dataset.r1ReplayReady='false';});
+}
 if (params.get('smoke') === '1' && !params.has('tour')) {
   // Deliberate browser smoke test: deterministic intervention followed by live compare.
   interveneCell(world, { kind: 'ignite', x: 10, y: 6 });
