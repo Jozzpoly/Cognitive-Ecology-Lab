@@ -27,3 +27,11 @@ Fixed two-source geometry, score/horizon tuning, initial stock asymmetry, distan
 
 ## Owner test
 Run, let both worlds evolve, deplete/replenish sources while running, swap policy combinations, reset same seed, inspect first divergence and evidence/decision logs. Judge whether the extra cognitive process creates an interesting causal phenomenon rather than merely a higher number.
+
+## First falsification / execution evidence — 2026-10-09
+
+The original east-rich world awarded authored recall an advantage over cooldown on every paired seed/scenario, an obvious target for falsification. New **World-only** ecological profiles reverse source richness or remove scarcity entirely while the actor-private sensor contract, courier and scoring law stay the same. The scientific motivation and exact results are preserved in [R0/F1](R0_FINDING_2026-10-09.md).
+
+The experiment's bounded sensitivity probe is now a **single pure module** (`src/sensitivity.mjs`) used by both the CI CLI and the Owner's in-browser contrast bench. The Owner can run it without changing the two currently evolving worlds. Contrast runs are local deterministic computations, **not** new independent actors or a live model.
+
+Boundary: 128 seeds × 5 intervention schedules × 4 ecological profiles are narrow parameter variations, not broad independent world samples. The physical encounter and timing of advice remain local and synchronous in R0. The more interesting next question is whether advice delayed by an independently running process is still useful, particularly when its knowledge expires.
