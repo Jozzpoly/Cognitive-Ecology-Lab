@@ -174,6 +174,8 @@ $('import-session').addEventListener('click',()=>{
     $('guide-result').textContent=result.verified===true?'Wynik odtworzony zgodnie z licznikami.':result.verified===false?'Wynik RÓŻNI się od zapisu — sprawdź wersję kodu.':'Brak zapisanych liczników do porównania.';
     $('compare-status').textContent='Po imporcie uruchom kontrprzebieg na aktualnym kodzie.';
     $('compare-output').replaceChildren();
+    document.documentElement.dataset.r1CompareReady='false';
+    document.documentElement.dataset.r1GhostReady='false';
     sessionStatus(result.verified===true?'Odtwarzanie PASS (liczniki zgodne).':'Odtworzone, ale weryfikacja liczników niepotwierdzona lub FAIL.');
     render();
   }catch(e){sessionStatus('Odtwarzanie odrzucone: '+e.message);}
@@ -421,6 +423,8 @@ if (params.get('replaySmoke') === '1') {
     const pack = await captureSession();
     $('session-data').value = JSON.stringify(pack);
     $('import-session').click();
+    // A fresh counterfactual must be computed after importing the historic state.
+    $('compare').click();
     document.documentElement.dataset.r1ReplayReady =
       $('session-status').textContent.includes('PASS') ? 'true' : 'false';
   })().catch(()=>{document.documentElement.dataset.r1ReplayReady='false';});
