@@ -1,6 +1,6 @@
 import { createExperiment, advance, intervene, summary, ECOLOGIES } from "./core.mjs";
 
-// Bounded, reproducible sensitivity probe. These 128 seeds cover only a very
+// Bounded, reproducible sensitivity probe. Seed counts vary by caller, but every run covers only a very
 // narrow hand-authored ecology (two sites and shifted initial restock phases).
 // The output does NOT establish general cognition quality.
 const scenarios = [
@@ -52,35 +52,39 @@ export function runSensitivity({ seedCount = 128, maxTick = 1200 } = {}) {
   if (!Number.isInteger(seedCount) || seedCount < 1 || seedCount > 256) throw new Error("invalid seedCount");
   if (!Number.isInteger(maxTick) || maxTick < 590 || maxTick > 10000) throw new Error("invalid maxTick");
   const report = {
-  protocol: "Cognition Relay/R0 sensitivity sweep; not an independent ecology or model benchmark",
-  seedRange: [0, seedCount - 1],
-  ecologies: [...ECOLOGIES],
-  tickHorizon: maxTick,
-  scenarios: [],
-};
-for (const ecology of ECOLOGIES) for (const scenario of scenarios) {
-  const results = [];
-  for (const [left, right] of comparisons) {
-    const rows = [];
-    for (let seed = 0; seed < seedCount; seed++) {
-      const exp = play(seed, left, right, scenario, ecology, maxTick);
-      const a = summary(exp.left), b = summary(exp.right);
-      rows.push({
-        seed,
-        deliveriesDelta: b.deliveries - a.deliveries,
-        emptyTripsDelta: b.emptyTrips - a.emptyTrips,
-        travelDelta: Math.round((b.distance - a.distance) * 1000) / 1000,
-        consultationsDelta: b.consultations - a.consultations,
-        diverged: exp.firstDivergenceTick !== null,
-      });
+    protocol: "Cognition Relay/R0 sensitivity sweep; not an independent ecology or model benchmark",
+    seedRange: [0, seedCount - 1],
+    ecologies: [...ECOLOGIES],
+    tickHorizon: maxTick,
+    scenarios: [],
+  };
+  for (const ecology of ECOLOGIES) {
+    for (const scenario of scenarios) {
+      const results = [];
+      for (const [left, right] of comparisons) {
+        const rows = [];
+        for (let seed = 0; seed < seedCount; seed++) {
+          const exp = play(seed, left, right, scenario, ecology, maxTick);
+          const a = summary(exp.left), b = summary(exp.right);
+          rows.push({
+            seed,
+            deliveriesDelta: b.deliveries - a.deliveries,
+            emptyTripsDelta: b.emptyTrips - a.emptyTrips,
+            travelDelta: Math.round((b.distance - a.distance) * 1000) / 1000,
+            consultationsDelta: b.consultations - a.consultations,
+            diverged: exp.firstDivergenceTick !== null,
+          });
+        }
+        results.push({
+          pair: left + " → " + right, ...stats(rows),
+          negativeExamples: rows.filter(x => x.deliveriesDelta < 0).slice(0, 3)
+            .map(x => ({ seed: x.seed, delta: x.deliveriesDelta })),
+          positiveExamples: rows.filter(x => x.deliveriesDelta > 0).slice(0, 3)
+            .map(x => ({ seed: x.seed, delta: x.deliveriesDelta })),
+        });
+      }
+      report.scenarios.push({ ecology, scenario: scenario.name, interventions: scenario.events, results });
     }
-    results.push({ pair: left + " → " + right, ...stats(rows),
-      negativeExamples: rows.filter(x => x.deliveriesDelta < 0).slice(0, 3).map(x => ({ seed: x.seed, delta: x.deliveriesDelta })),
-      positiveExamples: rows.filter(x => x.deliveriesDelta > 0).slice(0, 3).map(x => ({ seed: x.seed, delta: x.deliveriesDelta })),
-    });
   }
-  report.scenarios.push({ ecology, scenario: scenario.name, interventions: scenario.events, results });
-}
   return report;
 }
-

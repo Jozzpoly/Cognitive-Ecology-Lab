@@ -89,3 +89,31 @@ test("abundant world makes memory consultations causally redundant", () => {
     assert.ok(e.right.actor.consultations > 0);
   }
 });
+
+test("actor-private view cannot be mutated to rewrite world or episode history", () => {
+  const e = createExperiment({ seed: 9, left: "habit", right: "recall" });
+  advance(e, 90);
+  const source = e.left;
+  assert.ok(source.actor.episodes.length > 0, "required a witnessed visit");
+  const snapshot = privateView(source);
+  const prior = JSON.stringify(source.actor.episodes);
+  snapshot.self.x = -9999;
+  snapshot.choices[0].x = -9999;
+  snapshot.memories[0].outcome = "fabricated";
+  assert.equal(JSON.stringify(source.actor.episodes), prior);
+  assert.notEqual(source.actor.x, -9999);
+  assert.notEqual(privateView(source).choices[0].x, -9999);
+});
+
+test("hidden intervention does not affect current or nearby later private cognition", () => {
+  const altered = createExperiment({ seed: 21, left: "habit", right: "habit" });
+  const control = createExperiment({ seed: 21, left: "habit", right: "habit" });
+  intervene(altered, "east", "drain");
+  advance(altered, 5);
+  advance(control, 5);
+  assert.deepEqual(privateView(altered.left), privateView(control.left),
+    "actor must not know remote resources were changed");
+  assert.deepEqual(privateView(altered.right), privateView(control.right));
+  assert.notDeepEqual(altered.left.stations.east, control.left.stations.east,
+    "research worlds should genuinely differ");
+});
