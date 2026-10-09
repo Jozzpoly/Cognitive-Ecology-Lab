@@ -2,6 +2,16 @@ import { runSensitivity } from "./sensitivity.mjs";
 import { SITES, DEPOT, POLICIES, ECOLOGIES, createExperiment, advance, intervene, summary } from "./core.mjs";
 
 const $ = id => document.getElementById(id);
+fetch("./build.json", { cache: "no-store" })
+  .then(response => {
+    if (!response.ok) throw new Error("local or unversioned preview");
+    return response.json();
+  })
+  .then(version => {
+    if (/^[0-9a-f]{40}$/.test(version.sha)) $("source-version").textContent = "SOURCE " + version.sha.slice(0, 7);
+  })
+  .catch(() => {}); // Local dev intentionally has no publish receipt.
+
 const params = new URLSearchParams(location.search);
 const validPolicy = (name, fallback) => POLICIES.includes(name) ? name : fallback;
 const names = { habit: "Lokalny nawyk", cooldown: "Prosty cooldown", recall: "Doradca wspomnień" };
