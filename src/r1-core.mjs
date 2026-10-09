@@ -37,7 +37,7 @@ export function createCell({ seed = 19, mode = 'coalition', modules = {} } = {})
       pilot: { calls: 0, last: null }, dispatch: { calls: 0, last: null, chosen: null },
       planner: { calls: 0, pending: [], last: null, route: null, accepted: 0, rejected: 0 },
       guardian: { calls: 0, veto: 0, last: null },
-      broker: { disagreement: 0, deliberation: 0, local: 0 },
+      broker: { disagreement: 0, deliberation: 0, local: 0, last: null },
     },
     resolved: 0, expired: 0, interventions: [], logs: [], serial: 0, jamUntil: 0,
   };
@@ -187,6 +187,14 @@ function broker(w, goal, pilot) {
     }
     c.guardian.last = { t: w.t, blocked, danger: sensedRisk, veto: blocked || sensedRisk >= 2 };
   }
+  c.broker.last = {
+    t: w.t, targetId: goal.id, actor: copy(a),
+    pilotTargetId: pilot.target, pilotStep: pilot.step && copy(pilot.step),
+    dispatchTargetId: c.dispatch.last?.target ?? null,
+    plannerTargetId: c.planner.route?.goalId ?? null,
+    winner: step ? via : 'Postój', step: step && copy(step),
+    guardianVeto: !!c.guardian.last?.veto && c.guardian.last.t === w.t,
+  };
   if (step) append(w, 'move', `Ruch: ${via}`, `${a.x},${a.y} → ${step.x},${step.y} · alarm #${goal.id}`);
   return step;
 }
@@ -247,6 +255,7 @@ function tick(w) {
   a.targetId = selected?.id ?? null;
   if (!selected) { a.idle++; return; }
   const step = w.mode === 'local' ? pilot.step : broker(w, selected, pilot);
+  if (w.mode === 'local') c.broker.last = { t: w.t, targetId: selected.id, actor: copy(a), pilotTargetId: pilot.target, pilotStep: pilot.step && copy(pilot.step), dispatchTargetId: null, plannerTargetId: null, winner: pilot.step ? 'Pilot' : 'Postój', step: pilot.step && copy(pilot.step), guardianVeto: false };
   if (!step) { a.idle++; return; }
   if (w.walls.has(key(step.x, step.y))) {
     a.idle++; append(w, 'blocked', 'Zatrzymanie na przeszkodzie', `${step.x},${step.y}`); return;
@@ -296,7 +305,8 @@ export function compareWithoutModules(w) {
     t = event.tick;
   }
   advanceCell(control, w.t - t);
-  return { control: summaryCell(control), live: summaryCell(w), matchedTicks: w.t, eventCount: w.interventions.length };
+  return { control: summaryCell(control), live: summaryCell(w), matchedTicks: w.t, eventCount: w.interventions.length,
+    ghost: { actor: copy(control.actor), trail: control.actor.trace.map(copy), targetId: control.actor.targetId } };
 }
 export function summaryCell(w) {
   return { tick: w.t, resolved: w.resolved, expired: w.expired, hits: w.actor.hits,
