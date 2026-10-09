@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createWorld, createExperiment, privateView, recallAdvice, advance, intervene, summary, POLICIES } from "../src/core.mjs";
+import { createWorld, createExperiment, privateView, recallAdvice, advance, intervene, summary, POLICIES, ECOLOGIES } from "../src/core.mjs";
 
 test("same seed, same two policies and interventions -> exact replay", () => {
   const run = () => {
@@ -70,4 +70,22 @@ test("invalid intervention and policy fail closed", () => {
   const e = createExperiment();
   assert.throws(() => intervene(e, "unknown", "drain"));
   assert.throws(() => intervene(e, "west", "other"));
+});
+
+test("ecology changes hidden stocks without affecting initial actor-private input", () => {
+  const views = ECOLOGIES.map(ecology => privateView(createWorld(10, "recall", ecology)));
+  for (const view of views.slice(1)) assert.deepEqual(view, views[0]);
+  assert.throws(() => createWorld(10, "habit", "unsupported"));
+});
+
+test("abundant world makes memory consultations causally redundant", () => {
+  for (const seed of [0, 1, 17, 91]) {
+    const e = createExperiment({ seed, left: "habit", right: "recall", ecology: "abundant" });
+    advance(e, 1200);
+    assert.equal(e.firstDivergenceTick, null);
+    assert.equal(e.left.actor.deliveries, e.right.actor.deliveries);
+    assert.equal(e.left.actor.emptyTrips, 0);
+    assert.equal(e.right.actor.emptyTrips, 0);
+    assert.ok(e.right.actor.consultations > 0);
+  }
 });
