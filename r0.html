@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0c1220">
+  <meta name="description" content="Cognitive Ecology Lab — żywy eksperyment nad współpracą i porównywaniem procesów poznawczych.">
+  <title>Cognition Relay — Cognitive Ecology Lab</title>
+  <link rel="stylesheet" href="./src/style.css">
+  <script type="module" src="./src/app.mjs"></script>
+</head>
+<body>
+<main class="shell">
+  <header class="masthead">
+    <div class="ident"><span class="symbol" aria-hidden="true">◇</span> COGNITIVE ECOLOGY LAB <span class="version">R0 / SPECIMEN 001</span><span class="version" id="source-version">SOURCE LOCAL</span></div>
+    <div class="mast-actions"><a href="https://github.com/Jozzpoly/Cognitive-Ecology-Lab">Repozytorium ↗</a><a href="./docs/EXPERIMENT_001.md">Metoda badawcza ↗</a></div>
+  </header>
+  <section class="intro">
+    <p class="eyebrow">AUTONOMOUS DECISION SYSTEMS / LIVE COMPARISON</p>
+    <h1>Co rzeczywiście daje<br><em>drugi proces poznawczy?</em></h1>
+    <p class="lead">Dwa światy. Identyczny początek. Różne sposoby podejmowania decyzji. Patrz, jak historia i niezależna ekologia zmieniają zachowanie — albo wcale go nie poprawiają.</p>
+  </section>
+  <section class="console" aria-label="Sterowanie eksperymentem">
+    <div class="group"><label for="seed">Ziarno świata</label><input id="seed" type="number" min="0" max="4294967295" value="17" inputmode="numeric"></div>
+    <div class="group"><label for="policy-a">Proces A</label><select id="policy-a"><option value="habit">Lokalny nawyk</option><option value="cooldown">Prosty cooldown</option><option value="recall">Doradca wspomnień</option></select></div>
+    <div class="group"><label for="policy-b">Proces B</label><select id="policy-b"><option value="habit">Lokalny nawyk</option><option value="cooldown">Prosty cooldown</option><option value="recall" selected>Doradca wspomnień</option></select></div>
+    <div class="group"><label for="ecology">Ekologia</label><select id="ecology"><option value="asymmetric">Bogatszy wschód</option><option value="west-rich">Bogatszy zachód</option><option value="balanced">Równe zasoby</option><option value="abundant">Zasoby obfite</option></select></div>
+    <div class="group"><label for="speed">Tempo</label><select id="speed"><option value="1">1×</option><option value="2">2×</option><option value="4" selected>4×</option><option value="8">8×</option></select></div>
+    <div class="run-actions"><button id="toggle" class="primary">Pauza</button><button id="step" title="Wykonaj jeden tick">Krok</button><button id="reset">Reset A/B</button></div>
+  </section>
+  <section class="worlds" aria-label="Porównanie światów">
+    <article class="world-card">
+      <div class="world-head"><div><p class="eyebrow">BRANCH A</p><h2 id="title-a">Lokalny nawyk</h2></div><span class="pill">WORLD A</span></div>
+      <canvas id="world-a" width="600" height="450" role="img" aria-label="Świat A z aktorem, dwoma źródłami i punktem dostaw"></canvas>
+      <div class="readouts">
+        <div><span class="metric" id="deliveries-a">0</span><span class="metric-label">dostawy</span></div>
+        <div><span class="metric" id="empty-a">0</span><span class="metric-label">puste wyprawy</span></div>
+        <div><span class="metric" id="distance-a">0</span><span class="metric-label">droga</span></div>
+        <div><span class="metric" id="advice-a">0</span><span class="metric-label">konsultacje</span></div>
+      </div>
+      <p class="decision" id="reason-a">Uruchamianie…</p>
+      <div class="events"><h3>Ostatnie zdarzenia</h3><ol id="events-a"></ol></div>
+    </article>
+    <article class="world-card">
+      <div class="world-head"><div><p class="eyebrow">BRANCH B</p><h2 id="title-b">Doradca wspomnień</h2></div><span class="pill">WORLD B</span></div>
+      <canvas id="world-b" width="600" height="450" role="img" aria-label="Świat B z aktorem, dwoma źródłami i punktem dostaw"></canvas>
+      <div class="readouts">
+        <div><span class="metric" id="deliveries-b">0</span><span class="metric-label">dostawy</span></div>
+        <div><span class="metric" id="empty-b">0</span><span class="metric-label">puste wyprawy</span></div>
+        <div><span class="metric" id="distance-b">0</span><span class="metric-label">droga</span></div>
+        <div><span class="metric" id="advice-b">0</span><span class="metric-label">konsultacje</span></div>
+      </div>
+      <p class="decision" id="reason-b">Uruchamianie…</p>
+      <div class="events"><h3>Ostatnie zdarzenia</h3><ol id="events-b"></ol></div>
+    </article>
+  </section>
+  <section class="interventions">
+    <div class="section-head"><div><p class="eyebrow">OWNER INTERVENTION / BOTH BRANCHES</p><h2>Zmień warunki podczas działania</h2><p>Te same zewnętrzne interwencje trafiają do obu światów. Aktor dowiaduje się o stanie źródła dopiero przy jego odwiedzeniu.</p></div></div>
+    <div class="intervention-buttons">
+      <button data-site="west" data-action="drain">Opróżnij zachód</button><button data-site="west" data-action="fill">Uzupełnij zachód</button>
+      <button data-site="east" data-action="drain">Opróżnij wschód</button><button data-site="east" data-action="fill">Uzupełnij wschód</button>
+    </div>
+  </section>
+  <section class="audit" id="research-audit">
+    <div class="section-head">
+      <p class="eyebrow">RESEARCH / CONTRAST BENCH</p>
+      <h2>Co, jeśli doradca zacznie przeszkadzać?</h2>
+      <p>Uruchom oddzielne, szybkie porównanie pamięci z prostym cooldownem w czterech ekologach. Wynik nie zakłóca światów A/B powyżej. Dane z 16 ziaren × 5 zakłóceń na ekologię; rezultat jest poglądowy.</p>
+    </div>
+    <button id="run-audit">Przetestuj kontrświaty</button>
+    <p id="audit-status" class="technical" aria-live="polite">Niewykonane w tej sesji</p>
+    <div class="audit-output" id="audit-output"></div>
+  </section>
+  <section class="inspector">
+    <div class="inspector-info"><p class="eyebrow">CAUSAL COMPARISON</p><h2>Nie każdy rozjazd to postęp.</h2><p id="difference">Porównywanie pierwszej rozbieżności…</p><p id="current-tick" class="technical">TICK 0000</p></div>
+    <div class="inspector-info"><p class="eyebrow">EXPERIMENT SCOPE</p><p class="narrative">Oba światy startują tak samo. Z czasem decyzje mogą zmieniać ich osobne zasoby. Liczby i kolory na mapie pokazują <strong>wiedzę badacza</strong>, nie percepcję aktora. „Doradca” jest ręcznie napisany — żadnych fikcyjnych odpowiedzi LLM.</p><button id="copy" class="subtle">Kopiuj URL z ustawieniami</button><p id="copy-status" class="technical" aria-live="polite"></p></div>
+  </section>
+  <footer>R0 — prowizoryczny no-model specimen · Nie jest dowodem inteligencji ani produktem zaakceptowanym przez Ownera. <a href="./docs/STATE.md">Stan badania</a></footer>
+</main>
+</body>
+</html>

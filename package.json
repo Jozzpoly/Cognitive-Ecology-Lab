@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "node scripts/serve.mjs",
     "test": "node --test",
-    "check": "node --check src/core.mjs && node --check src/app.mjs && npm test"
+    "check": "node --check src/core.mjs && node --check src/app.mjs && node --check src/r1-core.mjs && node --check src/r1-app.mjs && npm test"
   }
 }

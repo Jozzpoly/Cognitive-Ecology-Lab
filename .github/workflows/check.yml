@@ -28,7 +28,9 @@ jobs:
           curl --fail --silent http://127.0.0.1:4173/ > /dev/null
           chrome="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
           if [ -z "$chrome" ]; then echo "No Chromium/Chrome found — real-browser evidence unavailable"; exit 1; fi
-          "$chrome" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --disable-background-networking --virtual-time-budget=3000 --dump-dom http://127.0.0.1:4173/ > /tmp/cel-dom.html 2>/tmp/cel-chrome.log || { cat /tmp/cel-chrome.log; exit 1; }
+          "$chrome" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --disable-background-networking --virtual-time-budget=3000 --dump-dom http://127.0.0.1:4173/r0.html > /tmp/cel-dom.html 2>/tmp/cel-chrome.log || { cat /tmp/cel-chrome.log; exit 1; }
           node scripts/assert-browser-dom.mjs /tmp/cel-dom.html
-          "$chrome" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --disable-background-networking --virtual-time-budget=6000 --dump-dom "http://127.0.0.1:4173/?audit=1" > /tmp/cel-audit.html 2>/tmp/cel-chrome-audit.log || { cat /tmp/cel-chrome-audit.log; exit 1; }
+          "$chrome" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --disable-background-networking --virtual-time-budget=6000 --dump-dom "http://127.0.0.1:4173/r0.html?audit=1" > /tmp/cel-audit.html 2>/tmp/cel-chrome-audit.log || { cat /tmp/cel-chrome-audit.log; exit 1; }
           node scripts/assert-browser-dom.mjs /tmp/cel-audit.html --audit
+          "$chrome" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --disable-background-networking --virtual-time-budget=5000 --dump-dom "http://127.0.0.1:4173/?smoke=1" > /tmp/cel-r1.html 2>/tmp/cel-chrome-r1.log || { cat /tmp/cel-chrome-r1.log; exit 1; }
+          node scripts/assert-r1-dom.mjs /tmp/cel-r1.html
