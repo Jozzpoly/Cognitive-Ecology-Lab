@@ -1,3 +1,4 @@
+import { runSensitivity } from "./sensitivity.mjs";
 import { SITES, DEPOT, POLICIES, ECOLOGIES, createExperiment, advance, intervene, summary } from "./core.mjs";
 
 const $ = id => document.getElementById(id);
@@ -162,4 +163,53 @@ function frame(now) {
   if (exp.left.tick !== lastUiTick) paint();
   requestAnimationFrame(frame);
 }
+
+const ecologyLabels = {
+  asymmetric: "Bogatszy wschód", "west-rich": "Bogatszy zachód",
+  balanced: "Równe zasoby", abundant: "Obfite zasoby",
+};
+$("run-audit").addEventListener("click", () => {
+  const button = $("run-audit");
+  button.disabled = true;
+  setText("audit-status", "Badanie 4 ekologii × 5 zakłóceń × 16 ziaren…");
+  // Give the UI one frame to render the status before the bounded synchronous probe.
+  requestAnimationFrame(() => {
+    try {
+      const report = runSensitivity({ seedCount: 16, maxTick: 1200 });
+      const table = document.createElement("table");
+      const head = document.createElement("thead");
+      const tr = document.createElement("tr");
+      for (const heading of ["Środowisko", "Pamięć wygrywa", "Przegrywa", "Remis", "Śr. Δ dostaw"]) {
+        const th = document.createElement("th");
+        th.textContent = heading; tr.append(th);
+      }
+      head.append(tr);
+      const body = document.createElement("tbody");
+      for (const ecology of report.ecologies) {
+        const results = report.scenarios.filter(s => s.ecology === ecology)
+          .map(s => s.results.find(r => r.pair === "cooldown → recall"));
+        const sum = key => results.reduce((total, r) => total + r.deliveriesDifference[key], 0);
+        const mean = results.reduce((total, r) => total + r.deliveriesDifference.mean, 0) / results.length;
+        const line = document.createElement("tr");
+        const values = [ecologyLabels[ecology], sum("positive"), sum("negative"), sum("tied"),
+          (mean >= 0 ? "+" : "") + mean.toFixed(2)];
+        values.forEach((value, index) => {
+          const cell = document.createElement("td");
+          cell.textContent = value;
+          if (index === 4) cell.className = mean < 0 ? "negative" : mean > 0 ? "positive" : "";
+          line.append(cell);
+        });
+        body.append(line);
+      }
+      table.append(head, body);
+      $("audit-output").replaceChildren(table);
+      setText("audit-status", "Wykonano 80 porównań na ekologię, 1200 ticków; wynik opisowy, nie test inteligencji.");
+    } catch (error) {
+      setText("audit-status", "Nie udało się wykonać porównania: " + String(error?.message ?? error));
+    } finally {
+      button.disabled = false;
+    }
+  });
+});
+
 syncPause(); paint(); requestAnimationFrame(frame);
