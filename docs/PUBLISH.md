@@ -9,6 +9,6 @@ Then use `Actions → Publish Owner preview → Run workflow`. Its published com
 Intended URL after successful first deployment:
 `https://jozzpoly.github.io/Cognitive-Ecology-Lab/`
 
-**Status:** publish path configured, not yet executed or verified. Do not advertise the intended URL as live until it resolves to the actual tested specimen.
+**Status:** FIRST DEPLOY CONFIRMED. [Owner preview run #37967250486](https://github.com/Jozzpoly/Cognitive-Ecology-Lab/actions/runs/37967250486) succeeded for pinned source `328b71cc86053f0722bd2fa28afd18420b0138c1`. A separate public fetch verified the expected HTML/title. Headless Chromium was verified against local source, not independently against the remote Pages runtime. **Recent ecology controls, audit UI and scientific results exist only on newer main until another manual Publish run.**
 
-The ordinary `Check` workflow runs headless tests and a Chromium browser smoke on every commit. It is independent of Pages and does not require Site deployment.
+The ordinary `Check` workflow runs 11+ headless tests, a multi-seed sensitivity sweep and two Chromium browser smokes (app boot and click-like on-demand audit) on every commit. It is independent of Pages and does not require Site deployment.
