@@ -3,7 +3,8 @@
 **Project:** first code-bearing specimen, no Owner acceptance.
 **Source of truth:** live Git `main` and executable tests outrank this note.
 **Current experiment:** Cognition Relay / Supply Ecology (`docs/EXPERIMENT_001.md`).
-**Published deployment:** NOT CONFIRMED. Run locally with `npm run dev`; GitHub Actions validates code, GitHub Pages configuration may require activation.
+**Last machine-qualified source:** `40d4d02233f92773127549bf78d44e78a31024a9` — [Check run 37907255277](https://github.com/Jozzpoly/Cognitive-Ecology-Lab/actions/runs/37907255277): Node 7/7 PASS; real Chromium boot/DOM smoke PASS, tick 10. **This is NOT Owner approval or evidence of emergent cognition.**
+**Published deployment:** NOT CONFIRMED. Run locally with `npm run dev`; see `docs/PUBLISH.md` for one-time GitHub Pages activation and manual preview publishing.
 
 ## Reality
 - Deliberately toy two-world courier with independent replenishment, meaningful material-like outcomes (pick up/deliver), and repeatable Owner interventions.
