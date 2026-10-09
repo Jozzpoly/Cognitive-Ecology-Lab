@@ -24,7 +24,11 @@ if(process.argv.includes('--tour')){
   for(const id of ['playbook','guide-title','guide-explain','decision-why','tile-info','ghost-on','view-private','next-event']){
     assert.ok(html.includes('id="'+id+'"'),'guided R1 interactive surface missing '+id);
   }
-  assert.ok(html.includes('Strażnik kontra ogień'),'guided challenge title is not rendered');
+  if(process.argv.includes('--replay')){
+    assert.ok(html.includes('Odtworzony eksperyment'),'imported session title is not rendered');
+  }else{
+    assert.ok(html.includes('Strażnik kontra ogień'),'guided challenge title is not rendered');
+  }
   console.log('R1 guided tour PASS — guardian case, private view and matched Pilot ghost');
 }
 
