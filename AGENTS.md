@@ -28,3 +28,7 @@ Provide stable source-native entry points and exact version receipts. Medium can
 
 ## Owner interface
 Polish, brief, visual and skimmable. Show only meaningful changes, tests, limitations, uncertainties and links to runnable artifacts. Ask for Owner experience, not technical Git administration.
+
+## Owner-facing R1 field-work boundary (2026-10-09)
+
+Owner says R1 starts to function but remains confusing and not yet what they want. Improve comprehension and material experimental pressure for one bounded stage, not a permanent R1 platform. Preserve replayable histories, negative synergy, exact source receipts and Owner observations. Do not characterize authored JS tick schedulers as independently running LLM brains. A green Pages publication proves deployable code, not interesting cognition. The next quality leap may replace this entire carrier; keep the evidence and the freedom to do that.

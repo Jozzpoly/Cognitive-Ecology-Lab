@@ -42,3 +42,34 @@ These are *correlated narrow variations of this one authored layout*, not 80 ind
 ## Verified merged-source receipt
 
 GitHub Actions [Check #37973567083](https://github.com/Jozzpoly/Cognitive-Ecology-Lab/actions/runs/37973567083) on merged exact source `a5cc41b339eeea1800588643df44a1ed82ad286d` executed 21/21 tests, the reproducible 40-seed R1 probe and live Chromium replay smoke. R1 probe JSON matched the narrow figures above. Public automatic Pages preview [#37973612396](https://github.com/Jozzpoly/Cognitive-Ecology-Lab/actions/runs/37973612396) served a matching `build.json`, verified externally. Deployment is **not** Owner approval.
+
+## R1 field-work campaign — guided understanding and reversible specimen
+
+**Owner feedback (2026-10-09):** the original R1 begins to function, but remains difficult to understand and is not yet the desired lab experience. Deliberately spend one more **bounded** campaign improving its inspectability and interactive pressure, then preserve the specimen and advance instead of enshrining it as platform architecture.
+
+### Three actual (non-mocked) scenarios
+
+- **01: Guardian versus fire**: ignite the known hotspot near the operator's initial path; pause, step to veto, then run same-stimulus Pilot-only counterfactual near tick 420. The established code-level negative/positive pairing is fewer hazard hits for the protected track, but throughput may be costly.
+- **02: Coordination interference**: follow a pre-seeded crisis sequence at ticks 180 and 340, then compare near tick 800. Preserves the independently established failure of an over-coordinated policy versus a competent cheap Pilot.
+- **03: Communication blackout**: jam Kartographer output and observe late/lost replies while Pilot keeps moving. Verify continuity, not system-wide paralysis.
+
+A guide simply runs deterministic `createCell/advanceCell/interveneCell`; no prerecorded result textures, fabricated LLM responses or hidden scripted teleportation. Distinct seeds may produce different outcomes. The default `seed=19` is the bounded validated teaching case.
+
+### How Owner can investigate
+
+1. Choose a scenario and **stop on the next relevant decision**, or jump to its documented outcome. Restart the same seed before drawing conclusions.
+2. Toggle **World truth ↔ actor-private knowledge**. The world debugger sees all heat and walls, but unknown cells and unobserved distant hazards must remain absent in the private view. The selection inspector explicitly contrasts fact with known/stale evidence.
+3. Open **Ostatnia decyzja** to see Pilot proposal, Dispatcher preference, Planner route, Guardian veto and actual arbitration. Last decision receipts are authored mechanical facts, not chain-of-thought from a model.
+4. Press **Uruchom kontrprzebieg**. The comparison freezes the snapshot at that tick, draws Pilot-only's recent path as a distinct ghost, and compares material results. Resuming/changing world invalidates that old comparison.
+5. Under **Eksport / import własnego eksperymentu**, download a bounded action-history JSON. It retains seed, timed interventions, module/mode changes, horizon, expected counters, and (on Pages) deployed source SHA. Import validates each command, reconstructs source-derived World state, and checks resulting counters. It does *not* serialize hidden private brain states or persist data to an external server.
+
+### Invariants and limitations
+
+- The public world and private actor view are deliberately different; merely seeing the debugger does not permit mechanisms to use omniscient knowledge.
+- The ghost shows the *same external stimulus*, not a parallel state forced to keep identical incident outcomes. The two worlds can diverge causally.
+- Guided cases and JSON sessions are limited reproducible witnesses, not generalized behavioral ability. Source SHA matters when importing future recordings after code changes.
+- Replay limits 200 actions and 10000 ticks. Deliberate restriction protects responsiveness and makes imported untrusted scenarios bounded. Owner actions are editable only through game-world operations.
+- A headless DOM test is **technical confidence**, not proof Owner can interpret, enjoy or break the experience.
+- The more processes there are, the more risk of expensive/conflicting coordination. Do not optimize for a pretty ratio of victories.
+
+**Retirement condition:** when Owner has learned what this apparatus can teach, keep its evidence and executable test snapshot; do not keep expanding Incidents purely to postpone the next conceptual leap.

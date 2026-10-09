@@ -1,31 +1,37 @@
 # CURRENT STATE — Cognitive Ecology Lab
 
-Updated **2026-10-09**. **Authority:** live `main`, exact CI output and public build SHA outrank this note. This is a recovery map, not a competing architecture document.
+Updated 2026-10-09 · **live source of truth:** Git `main`, exact GitHub Actions checks and public `build.json`; this is a compact recovery checkpoint only.
 
-## Actual execution frontier
+## What currently exists
 
-- **R1 Incident Cell:** a new, independent interactive specimen with one World and four **authored logical** mechanisms: cheap local Pilot (tick clock 3), Dispatcher (clock 11), Cartographer (snapshot 23, delayed answer 7–11), Guardian (immediate local veto). Broker arbitrates contested actuation. Dynamic incidents, timed deadlines, seeded environmental hazards, walls, blackout/jam injection and runtime module ablations.
-- **No model API or learned cognitive system has been integrated.** These are different authored mechanisms and *simulated* asynchronous cognition, not true parallel workers nor independent Jev/Clef/Luna/ReflexBrain minds. No borrowed runtime from sibling projects.
-- **Qualified and published source:** [main `a5cc41b339eeea1800588643df44a1ed82ad286d`](https://github.com/Jozzpoly/Cognitive-Ecology-Lab/commit/a5cc41b339eeea1800588643df44a1ed82ad286d) · [Check #37973567083](https://github.com/Jozzpoly/Cognitive-Ecology-Lab/actions/runs/37973567083) PASS: **21/21 tests**, R0 sweep, R1 negative-synergy/safety probe and R0+R1 real Chromium browser smokes · [automatic Pages release #37973612396](https://github.com/Jozzpoly/Cognitive-Ecology-Lab/actions/runs/37973612396): public `build.json` independently confirmed matching exact source SHA; successful actual deploy.
-- **No Owner R1 experiential qualification.** Owner tested R0 on 2026-10-09 and said it was too simple to give useful feedback. R0 is preserved separately at `/r0.html`; current R1 is an explicitly *larger* but still very limited experimental prototype.
+- **R0** archived at `r0.html`: two courier worlds and authored recall comparison; historically useful falsification of universal memory superiority. Owner found it too simple to judge.
+- **R1 Incident Cell** at `index.html` / `r1.html`: one material grid yard; cheap Pilot + deadline Dispatcher + delayed Cartographer + local Guardian. These are four **authored algorithms in one JavaScript loop**, not four autonomous LLM minds, a learned organism or true parallel workers. There are world interventions, ablations, real consequences and matched-stimulus Pilot counterfactual.
+- **Owner direct judgment 2026-10-09:** R1 is *beginning* to show something, but remains confusing and **not yet the sought experience**. Owner explicitly authorized a bounded usability and experiment campaign before moving forward, without converting this carrier into permanent project architecture.
+- **R1 comprehension campaign (this turn):** three reproducible crisis examples (safety, coordination overload, communication failure); fast forward to relevant causal outcomes; World truth vs actor-private visibility; live broker-decision explanations; same-tick Pilot-only spatial ghost; export/import bounded Owner action histories with counter verification; tests for cases, replay integrity, and exact same HTML entrypoint. See [R1 protocol](EXPERIMENT_002.md). R0 deliberately retained.
+- **No production cognition yet:** no Jev/Clef/LLM integration, no learned ReflexBrain transplant, no general cognition routing system, no claim of emergent general intelligence.
 
-## Contradictory causal evidence (feature, not embarrassment)
+## Scientific findings and status
 
-The cheap Pilot can already avoid walls using actual sensed obstacles and recent-visit inhibition. The koalicja often **performs worse** on incident throughput because delayed plans and competing priorities incur coordination overhead. In targeted danger regimes, Guardian's safety intervention **reduces damage** relative to Pilot-only.
+1. R1's local Pilot is an intentionally **competent** baseline. A coalition with more modules can do worse on throughput: bounded 40-seed campaign had 2 coalition wins, 35 Pilot wins and 3 ties (mean −2.125 incident resolutions). Keep this negative result.
+2. Targeted Guardian veto can prevent damage, though it can also reduce useful throughput. This is a narrow material benefit from specialization, not proof of optimal coordination.
+3. Delay and interrupted advice are simulated in deterministic tick-time, with private observation boundaries and stale-plan refusal.
+4. R0's simpler episodic recall loses in some inverted environments and offers no value in abundant ones. [R0 receipt](R0_FINDING_2026-10-09.md).
+5. **Owner-level experiential quality still OPEN / unqualified**. Passing automation does not supersede their evaluation.
 
-Early local bounded sweep (40 seeds, 800 ticks, same external interventions across both tracks): coalition 2 wins, local Pilot 35 wins, 3 ties for completed incidents; average `coalition - Pilot` is −2.125. Guardian protected against heat exposure, 0 vs 75 entry hits in ordinary intervention regime. **Not independently representative** of other world layouts, learned cognition, or model ecosystems. See [R1 method and limits](EXPERIMENT_002.md) and `scripts/r1-probe.mjs`.
+## Source/evidence recovery
 
-R0/F1 found recall beats cooldown in one ecology and loses in another; in abundant worlds it adds useless consultations. Preserved [bounded evidence](R0_FINDING_2026-10-09.md).
+- Last early R1 source qualification: [merged R1 Check #37973567083](https://github.com/Jozzpoly/Cognitive-Ecology-Lab/actions/runs/37973567083), 21/21 PASS.
+- R1 guided campaign is verified **only at its most recent green source check**. Find current `main`, read its latest `Check` logs for Node/unit, R0/R1 bounded probes, and real Chromium: ordinary app, guided challenge and action-replay smoke. Do not cite a queued, failed or earlier green commit as qualification for current HEAD.
+- Automatically published Pages is a **moving research preview**: [live app](https://jozzpoly.github.io/Cognitive-Ecology-Lab/) · [build.json](https://jozzpoly.github.io/Cognitive-Ecology-Lab/build.json). Check SHA and that deploy-pages genuinely ran; a green but skipped workflow is not a publish receipt.
+- Only `main` needed unless evidence demands short-lived work branch. No currently accepted organism. Inspect live branches/PRs rather than assuming historical counts.
 
-## Next substantive run (unfrozen hypotheses)
+## Next substantial run
 
-1. **Owner-facing test of R1**: Can Owner create a situation where the limits and benefits of collaboration can be meaningfully understood? If not, do not polish this little yard forever — replace it.
-2. Explore **admission and delegation**: when should the local Pilot request slow help; when may priority systems interrupt; when is a stale plan obsolete; how to reduce costly coordination. Compare cheap gating vs forced always-on coordination against matched external shocks.
-3. Require real external model calls, time/cost/latency accounting and strict private input if introducing Jev/Clef/Luna. Never simulate their outputs while labeling them as models.
-4. Preserve R0 and R1 as individually reproducible evidence; do not let a small visual experiment freeze project architecture or turn it into ReflexBrain 2.
+1. **Give Owner room to explore the upgraded R1**; capture actual confusion, surprises, exploits or breakdowns. The UI should clarify *why* and *who* caused decisions rather than require reading logs.
+2. If R1 remains uninteresting, **stop R1 enhancement**. Preserve exact runnable snapshot, executed falsifiers, incident cases and Owner JSON reproductions. Then move to a new richer carrier with a more demanding joint-cognition phenomenon; do not preserve the courier/grid as canon.
+3. If Owner discovers something genuinely interesting, isolate that phenomenon and test attribution, cost and failure boundaries. Prefer one concrete gain over an indefinite module framework.
+4. Only integrate true external models when their new cognition contribution is measurable, private boundaries and stale-answer admission are testable and API budgets explicit. Not a substitute for interesting situated dynamics.
 
-## Operating contract
+**Contracts:** [AGENTS](../AGENTS.md) · [R1](EXPERIMENT_002.md) · [donor intake](DONORS.md) · [publish](PUBLISH.md) · [project instructions](CHATGPT_PROJECT_INSTRUCTIONS.md).
 
-`npm run check` · `npm run dev` · [R1 method](EXPERIMENT_002.md) · [Donors](DONORS.md) · [Publish receipts](PUBLISH.md) · [AGENTS](../AGENTS.md).
-
-**Statuses:** R0 machine PASS / Owner R0 NOT JUDGEABLE · R1 machine PASS / Owner R1 NOT TESTED · real multi-model cognition NOT IMPLEMENTED.
+**Status:** R0 archive/mechanics PASS · R1 source tests conditional on HEAD · R1 Owner says promising start but insufficient/not understood · actual learned/multi-model cognition NOT IMPLEMENTED.

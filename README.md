@@ -1,5 +1,11 @@
 # Cognitive Ecology Lab
 
+## Try R1 in three actions
+
+[Open Incident Cell](https://jozzpoly.github.io/Cognitive-Ecology-Lab/), choose **01 · Ogień na trasie**, click **Do ważnej decyzji**, toggle **Wiedza wykonawcy**, then **Przeskocz do wyniku** and compare against the Pilot-only ghost. Next select **02 · Koalicja przeszkadza**: more cognition is not automatically better. The session notebook can export/import exact timed interventions and module switches.
+
+Owner reported R1 starts to function but remains confusing and is not the target. This remains a temporary specimen; [current scientific state](docs/STATE.md) and [scope](docs/EXPERIMENT_002.md) guide continuation.
+
 **Research on causal interactions, cooperation, conflict and specialization among cognitive processes.** An independent sister to ReflexBrain, SPC, Companion and Medium — not their replacement or a shared organism architecture.
 
 ## Current experiment — R1 Incident Cell

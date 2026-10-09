@@ -6,7 +6,7 @@ const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
 const rawSeed = Number(params.get('seed') ?? 19);
 const seed = Number.isInteger(rawSeed) && rawSeed >= 0 && rawSeed <= 4294967295 ? rawSeed : 19;
-const toolNames = { ignite: 'Zapłon', wall: 'Przeszkoda', alarm: 'Alarm', cool: 'Ugaś' };
+const toolNames = { inspect:'Sprawdź pole', ignite: 'Zapłon', wall: 'Przeszkoda', alarm: 'Alarm', cool: 'Ugaś' };
 const labels = { pilot: 'PILOT', dispatch: 'DYSPOZYTOR', planner: 'KARTOGRAF', guardian: 'STRAŻNIK' };
 const esc = s => String(s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
 let world = createCell({ seed });
