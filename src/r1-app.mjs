@@ -109,6 +109,14 @@ $('compare').addEventListener('click', () => {
       table.append(tbody);
       $('compare-output').replaceChildren(table);
       $('compare-status').textContent = `Tick ${world.t} · ${result.eventCount} interwencji w identycznych chwilach · Δ opanowanych: ${delta >= 0 ? '+' : ''}${delta}. To ograniczone porównanie, nie dowód przewagi AI.`;
+      if (activeGuide) {
+        const harm = result.control.hits-result.live.hits;
+        const throughput = delta>0?'koalicja opanowała więcej alarmów':delta<0?'sam Pilot opanował więcej alarmów':'oba przebiegi opanowały tyle samo alarmów';
+        const safety = harm>0?'Strażnik i koalicja ograniczyli kontakty z ogniem o '+harm:
+          harm<0?'koalicja doznała więcej kontaktów z zagrożeniami':'obie wersje odnotowały tyle samo kontaktów z ogniem';
+        $('guide-result').textContent = 'Wynik tego przebiegu: '+throughput+' ('+result.live.resolved+' vs '+result.control.resolved+'). '+safety+
+          '. Obejrzyj teraz pomarańczowy ślad samego Pilota na mapie; nie jest to dowód ogólnej wyższości.';
+      }
       document.documentElement.dataset.r1CompareReady = 'true';
       render();
     } catch (e) { $('compare-status').textContent = 'Porównanie nie powiodło się: ' + e.message; }
