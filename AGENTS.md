@@ -4,13 +4,14 @@
 Discover when cooperation, competition, memory and metacognitive routing between cognitive mechanisms create **causal value** beyond each isolated mechanism. Do not replace ReflexBrain, SPC or Companion. A toy scenario is a disposable scientific carrier, not a claim of organism life.
 
 ## Recovery (minimal, not a ritual)
-1. Confirm the actual repository and live `main` SHA.
+1. Confirm the actual repository and live `main` SHA; inspect exact Check and deployed `build.json` before claiming a preview is current.
 2. Read `docs/STATE.md` for current frontier; inspect current files, tests, and relevant PRs.
 3. Recover only the source/evidence required for the next meaningful action. Chat context and donor documents are leads, not repo truth.
 4. Execute and verify; update the single state note only after material progress.
 
 ## Execution
 - Build real interactive experiments quickly. Prefer a directly judgeable comparison to prolonged preparation and architecture speculation.
+- **Owner checkpoint (2026-10-09):** R0 is too simple to assess. Treat it as a disposable harness/reference, not the lab's canonical organism. Do not equate two synchronous courier policies with cooperative cognitive agents, or spend the next runs polishing courier scenarios. Seek a qualitative leap that makes interaction among distinct mechanisms observable.
 - Keep `main` runnable. Use one short `work/<topic>` branch only when isolation warrants it. PRs are temporary review objects, not historical storage. Do not force-merge rejected specimens.
 - Distinguish machine PASS, research finding, Owner-experienced value and hypothesis. No green test upgrades a toy into a living system.
 - Commit source and matching tests/docs together when material. Avoid parallel status ledgers, sprawling handoffs, long root README, and CI enforcing a research roadmap.

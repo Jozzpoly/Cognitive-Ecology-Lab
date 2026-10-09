@@ -24,3 +24,7 @@ First manually executed Pages release: [#37967250486](https://github.com/Jozzpol
 - Cloud browser fetch, GitHub Action success, real Chromium test, and direct Owner experiential assessment are distinct evidence classes.
 - No source/asset from donor repositories is copied automatically.
 - Do not edit Pages deployment state to conceal a failed research result. Keep failed experiments reachable through exact commits.
+
+## Operational audit note (2026-10-09)
+
+A `Publish Owner preview` workflow can finish with a green **job** after skipping all deployment steps because a newer SHA reached `main`. Do **not** infer Pages published from a green workflow card alone. Verify `Run actions/deploy-pages@v4` actually completed, then read public `build.json` and compare `sha` to the intended commit. First automatic public preview qualification: [#37969074673](https://github.com/Jozzpoly/Cognitive-Ecology-Lab/actions/runs/37969074673), SHA `e89958e`, independently verified through `build.json`.

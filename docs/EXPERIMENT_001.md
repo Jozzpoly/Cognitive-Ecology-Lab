@@ -35,3 +35,7 @@ The original east-rich world awarded authored recall an advantage over cooldown 
 The experiment's bounded sensitivity probe is now a **single pure module** (`src/sensitivity.mjs`) used by both the CI CLI and the Owner's in-browser contrast bench. The Owner can run it without changing the two currently evolving worlds. Contrast runs are local deterministic computations, **not** new independent actors or a live model.
 
 Boundary: 128 seeds × 5 intervention schedules × 4 ecological profiles are narrow parameter variations, not broad independent world samples. The physical encounter and timing of advice remain local and synchronous in R0. The more interesting next question is whether advice delayed by an independently running process is still useful, particularly when its knowledge expires.
+
+## Owner observation / bounded closure — 2026-10-09
+
+Owner tested the published R0 in the browser and reported it remains **too simple to judge**. Status: **mechanical and scoped causal-comparison specimen only; no Owner experimental qualification**. This supersedes the earlier request to keep prompting Owner to assess it. New continuation should **not** assume a delayed version of the same courier is the necessary R1 research direction. The target is a qualitatively richer phenomenon of *interaction between cognitive processes*, with freedom to replace the R0 carrier. Current authority is [STATE.md](STATE.md).

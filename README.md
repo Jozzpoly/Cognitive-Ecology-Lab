@@ -4,9 +4,11 @@
 
 This is **not ReflexBrain 2**, another LLM-driven NPC, or a replacement for the existing research projects. It studies whether interacting cognitive mechanisms create observable advantages, pathologies or new capabilities compared with the same mechanisms working alone.
 
+**Current qualification:** R0 mechanics tested, but Owner (2026-10-09) found the actual experiment too simple to judge. This is a disposable research calibration and **does not yet demonstrate cooperation among independent cognitive processes**. [Recover live state and next frontier](docs/STATE.md).
+
 ## First executable specimen — Cognition Relay / Supply Ecology
 
-Two independently continuing toy-worlds begin from the same deterministic seed. A local courier collects and delivers resources while supply sites independently replenish. The left and right participants may use different decision policies: a minimal local baseline, a simple finite cooldown, or the same local baseline advised by a *separate episodic-recall mechanism*. The last is a hand-authored reference mechanism, **not Jev, ReflexBrain, a learned model or an LLM**.
+Two independently continuing toy-worlds begin from the same deterministic seed. A local courier collects and delivers resources while supply sites independently replenish. The left and right participants may use different decision policies: a minimal local baseline, a simple finite cooldown, or the same local baseline advised by a *synchronous deterministic episodic-recall helper*. The last is a hand-authored reference mechanism, **not Jev, ReflexBrain, a learned model or an LLM**.
 
 Compare deliveries, empty trips, travel, advisory activity and traces. Intervene in both worlds, repeat with the same seed, or disable the advisor. The toy-world is a replaceable experimental carrier, **not a claimed organism**.
 
