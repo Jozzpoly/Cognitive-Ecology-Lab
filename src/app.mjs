@@ -203,6 +203,7 @@ $("run-audit").addEventListener("click", () => {
       }
       table.append(head, body);
       $("audit-output").replaceChildren(table);
+      document.documentElement.dataset.auditComplete = "true";
       setText("audit-status", "Wykonano 80 porównań na ekologię, 1200 ticków; wynik opisowy, nie test inteligencji.");
     } catch (error) {
       setText("audit-status", "Nie udało się wykonać porównania: " + String(error?.message ?? error));
@@ -212,4 +213,6 @@ $("run-audit").addEventListener("click", () => {
   });
 });
 
-syncPause(); paint(); requestAnimationFrame(frame);
+syncPause(); paint();
+if (params.get("audit") === "1") $("run-audit").click();
+requestAnimationFrame(frame);
