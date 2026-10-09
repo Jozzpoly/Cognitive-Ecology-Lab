@@ -1,5 +1,6 @@
 import { WIDTH, HEIGHT, BASE, createCell, advanceCell, interveneCell, compareWithoutModules, summaryCell } from './r1-core.mjs';
 import { GUIDES, buildGuide } from './r1-guides.mjs';
+import { makeSession, replaySession } from './r1-replay.mjs';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -17,6 +18,8 @@ let previous = performance.now();
 let lastShown = -1;
 let activeTab = 'timeline';
 let activeGuide = null, viewMode = 'world', ghost = null, tileSelection = null;
+let initialControls = {mode:'coalition', modules:{dispatch:true,planner:true,guardian:true}};
+let chronicle=[];
 $('seed').value = String(seed);
 const canvas = $('arena'), ctx = canvas.getContext('2d');
 
@@ -37,8 +40,9 @@ function begin() {
   $('guide-title').textContent = 'Tryb swobodny — wybierz scenariusz powyżej';
   $('guide-explain').textContent = 'Cel: patrz, który proces i dlaczego zmienił ruch.';
   $('guide-result').textContent = '';
-  world = createCell({ seed: next, mode: $('mode').value,
-    modules: { dispatch: $('dispatch-on').checked, planner: $('planner-on').checked, guardian: $('guardian-on').checked } });
+  initialControls = {mode:$('mode').value,modules:{dispatch:$('dispatch-on').checked,planner:$('planner-on').checked,guardian:$('guardian-on').checked}};
+  world = createCell({ seed: next, mode: initialControls.mode, modules: initialControls.modules });
+  chronicle=[];
   lastShown = -1;
   acc = 0;
   $('compare-status').textContent = 'Nie uruchomiono kontrprzebiegu w tej sesji.';
@@ -46,11 +50,13 @@ function begin() {
   render();
 }
 $('reset').addEventListener('click', begin);
-$('mode').addEventListener('change', () => { invalidateComparison(); world.mode = $('mode').value; render(); });
+$('mode').addEventListener('change', () => { invalidateComparison(); world.mode = $('mode').value;
+  chronicle.push({tick:world.t,type:'mode',mode:world.mode}); render(); });
 for (const module of ['dispatch', 'planner', 'guardian']) {
   $(module + '-on').addEventListener('change', () => {
     invalidateComparison();
     world.modules[module] = $(module + '-on').checked;
+    chronicle.push({tick:world.t,type:'module',module,enabled:world.modules[module]});
     world.logs.push({ t: world.t, type: 'system', text: module + (world.modules[module] ? ' włączony' : ' odłączony'), detail: 'Konfiguracja zmieniona podczas działania' });
     render();
   });
@@ -58,7 +64,12 @@ for (const module of ['dispatch', 'planner', 'guardian']) {
 $('pause').addEventListener('click', () => { stopped = !stopped; $('pause').textContent = stopped ? '▶ Wznów' : 'Ⅱ Pauza'; });
 $('step').addEventListener('click', () => { stopped = true; $('pause').textContent = '▶ Wznów'; invalidateComparison(); advanceCell(world, 3); render(); });
 $('speed').addEventListener('change', () => { speed = Number($('speed').value); });
-$('jam').addEventListener('click', () => { invalidateComparison(); interveneCell(world, { kind: 'jam' }); render(); });
+function recordLatestIntervention(previous) {
+  if(world.interventions.length>previous){const a=world.interventions[world.interventions.length-1];
+    chronicle.push({tick:a.tick,type:'world',kind:a.kind,x:a.x,y:a.y});}
+}
+$('jam').addEventListener('click', () => { invalidateComparison(); const before=world.interventions.length;
+  interveneCell(world, { kind: 'jam' }); recordLatestIntervention(before); render(); });
 for (const button of document.querySelectorAll('[data-tool]')) button.addEventListener('click', () => {
   tool = button.dataset.tool;
   for (const b of document.querySelectorAll('[data-tool]')) b.classList.toggle('selected', b === button);
@@ -112,10 +123,61 @@ canvas.addEventListener('click', event => {
   const y = Math.floor((event.clientY - rect.top - oy) / scale);
   if (x < 0 || y < 0 || x >= WIDTH || y >= HEIGHT) return;
   if (tool === 'inspect') { tileSelection = {x,y}; render(); return; }
-  invalidateComparison(); interveneCell(world, { kind: tool, x, y });
+  invalidateComparison(); const before=world.interventions.length;
+  interveneCell(world, { kind: tool, x, y }); recordLatestIntervention(before);
   render();
 });
 
+
+
+const sessionStatus = msg => $('session-status').textContent=msg;
+async function captureSession(){
+  const pack=makeSession(world,initialControls,chronicle);
+  try{
+    const r=await fetch('./build.json',{cache:'no-store'});
+    if(r.ok){const meta=await r.json();if(/^[a-f0-9]{40}$/.test(meta.sha))pack.sourceSha=meta.sha;}
+  }catch{/* local developer server has no manifest */}
+  return pack;
+}
+$('export-session').addEventListener('click',async ()=>{
+  try{
+    const pack=await captureSession();
+    if(pack.chronicle.length>200||pack.until>10000) throw new Error('Przekroczono limit zapisu. Zacznij nową serię.');
+    $('session-data').value=JSON.stringify(pack,null,2);
+    sessionStatus('Zapis gotowy. Zawiera historię działań i testowalne liczniki, bez prywatnych sekretów.');
+  }catch(e){sessionStatus('Zapis niedostępny: '+e.message);}
+});
+$('download-session').addEventListener('click',async ()=>{
+  try{
+    const pack=await captureSession();
+    if(pack.chronicle.length>200||pack.until>10000)throw new Error('Przekroczono limit 200 działań / 10000 ticków');
+    const blob=new Blob([JSON.stringify(pack,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);const a=document.createElement('a');
+    a.href=url;a.download='cognitive-ecology-r1-'+pack.seed+'-t'+pack.until+'.json';
+    document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+    sessionStatus('Pobrano opis eksperymentu, nie snapshot fikcyjnej pamięci mózgów.');
+  }catch(e){sessionStatus('Eksport nieudany: '+e.message);}
+});
+$('import-session').addEventListener('click',()=>{
+  try{
+    const raw=$('session-data').value;
+    if(raw.length>60000)throw new Error('Zbyt duży plik JSON');
+    const pack=JSON.parse(raw);const result=replaySession(pack);
+    world=result.world;initialControls={mode:pack.initial.mode,modules:{...pack.initial.modules}};
+    chronicle=pack.chronicle.map(x=>({...x}));activeGuide=null;ghost=null;tileSelection=null;acc=0;lastShown=-1;
+    stopped=true;$('pause').textContent='▶ Wznów';
+    $('seed').value=String(world.seed);$('mode').value=world.mode;
+    for(const module of ['dispatch','planner','guardian'])$(module+'-on').checked=world.modules[module];
+    for(const button of document.querySelectorAll('[data-guide]'))button.classList.remove('selected');
+    $('guide-title').textContent='Odtworzony eksperyment · t='+world.t;
+    $('guide-explain').textContent='Możesz porównywać, oglądać wiedzę i kontynuować odtwarzany świat.';
+    $('guide-result').textContent=result.verified===true?'Wynik odtworzony zgodnie z licznikami.':result.verified===false?'Wynik RÓŻNI się od zapisu — sprawdź wersję kodu.':'Brak zapisanych liczników do porównania.';
+    $('compare-status').textContent='Po imporcie uruchom kontrprzebieg na aktualnym kodzie.';
+    $('compare-output').replaceChildren();
+    sessionStatus(result.verified===true?'Odtwarzanie PASS (liczniki zgodne).':'Odtworzone, ale weryfikacja liczników niepotwierdzona lub FAIL.');
+    render();
+  }catch(e){sessionStatus('Odtwarzanie odrzucone: '+e.message);}
+});
 
 const scenarioById = id => GUIDES.find(g => g.id === id);
 function loadGuide(id) {
@@ -125,6 +187,8 @@ function loadGuide(id) {
   const nextSeed = Number.isInteger(proposedSeed) && proposedSeed >= 0 && proposedSeed <= 4294967295 ? proposedSeed : 19;
   world = buildGuide(id, { seed: nextSeed });
   activeGuide = id; ghost = null; tileSelection = null; acc = 0; lastShown = -1;
+  initialControls={mode:'coalition',modules:{dispatch:true,planner:true,guardian:true}};
+  chronicle=world.interventions.map(a=>({tick:a.tick,type:'world',kind:a.kind,x:a.x,y:a.y}));
   stopped = true;
   $('pause').textContent = '▶ Wznów';
   $('mode').value = 'coalition';
