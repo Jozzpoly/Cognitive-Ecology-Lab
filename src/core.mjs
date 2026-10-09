@@ -6,21 +6,34 @@ export const SITES = Object.freeze([
 ]);
 export const DEPOT = Object.freeze({ x: 6, y: 7 });
 export const POLICIES = Object.freeze(["habit", "cooldown", "recall"]);
+export const ECOLOGIES = Object.freeze(["asymmetric", "west-rich", "balanced", "abundant"]);
+function initialStations(seed, ecology) {
+  const slow = { stock: 0, max: 3, restockEvery: 92, nextRestock: 78 + seed % 17 };
+  const fast = { stock: 3, max: 3, restockEvery: 43, nextRestock: 31 + (seed * 7) % 12 };
+  if (ecology === "west-rich") return { west: { ...fast }, east: { ...slow } };
+  if (ecology === "balanced") return {
+    west: { stock: 2, max: 3, restockEvery: 56, nextRestock: 42 + seed % 13 },
+    east: { stock: 2, max: 3, restockEvery: 56, nextRestock: 42 + (seed * 3) % 13 },
+  };
+  if (ecology === "abundant") return {
+    west: { stock: 3, max: 3, restockEvery: 1, nextRestock: 1 },
+    east: { stock: 3, max: 3, restockEvery: 1, nextRestock: 1 },
+  };
+  return { west: slow, east: fast };
+}
 const SPEED = 0.45;
 const round = n => Math.round(n * 1000) / 1000;
 const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
 const assert = (ok, message) => { if (!ok) throw new Error(message); };
 const trim = (items, length) => { if (items.length > length) items.splice(0, items.length - length); };
 
-export function createWorld(seed = 1, policy = "habit") {
+export function createWorld(seed = 1, policy = "habit", ecology = "asymmetric") {
   assert(POLICIES.includes(policy), "unknown policy");
+  assert(ECOLOGIES.includes(ecology), "unknown ecology");
   const s = Number(seed) >>> 0;
   return {
-    seed: s, tick: 0, policy,
-    stations: {
-      west: { stock: 0, max: 3, restockEvery: 92, nextRestock: 78 + s % 17 },
-      east: { stock: 3, max: 3, restockEvery: 43, nextRestock: 31 + (s * 7) % 12 },
-    },
+    seed: s, tick: 0, policy, ecology,
+    stations: initialStations(s, ecology),
     actor: {
       x: DEPOT.x, y: DEPOT.y, carrying: false, target: null,
       skipOnce: null, deliveries: 0, emptyTrips: 0, distance: 0,
@@ -167,11 +180,11 @@ function advanceWorld(world) {
   }
 }
 
-export function createExperiment({ seed = 1, left = "habit", right = "recall" } = {}) {
+export function createExperiment({ seed = 1, left = "habit", right = "recall", ecology = "asymmetric" } = {}) {
   return {
-    seed: Number(seed) >>> 0,
-    left: createWorld(seed, left),
-    right: createWorld(seed, right),
+    seed: Number(seed) >>> 0, ecology,
+    left: createWorld(seed, left, ecology),
+    right: createWorld(seed, right, ecology),
     firstDivergenceTick: null,
     interventions: [],
   };
