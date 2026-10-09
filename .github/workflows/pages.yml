@@ -50,16 +50,15 @@ jobs:
       - name: Validate source
         if: steps.freshness.outputs.publish == 'true'
         run: npm run check
-      - name: Package exact-source research preview
+      - name: Withdraw published laboratory and assets
         if: steps.freshness.outputs.publish == 'true'
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p dist/docs
-          cp index.html r0.html r1.html dist/
-          cp -R src dist/src
-          cp docs/*.md dist/docs/
-          printf '{"sha":"%s","run":"%s","status":"research-preview-not-owner-qualified"}\n' "$SOURCE_SHA" "$GITHUB_RUN_ID" > dist/build.json
+          mkdir -p dist
+          printf '%s\n' '<!doctype html><html lang="pl"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow,noarchive"><title></title></head><body></body></html>' > dist/index.html
+          cp dist/index.html dist/404.html
+          printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt
       - uses: actions/configure-pages@v5
         if: steps.freshness.outputs.publish == 'true'
       - uses: actions/upload-pages-artifact@v4
