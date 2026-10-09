@@ -10,7 +10,7 @@ Two independently continuing toy-worlds begin from the same deterministic seed. 
 
 Compare deliveries, empty trips, travel, advisory activity and traces. Intervene in both worlds, repeat with the same seed, or disable the advisor. The toy-world is a replaceable experimental carrier, **not a claimed organism**.
 
-**Public preview:** https://jozzpoly.github.io/Cognitive-Ecology-Lab/ — preview is manually published, may lag behind latest `main`. See [publication state](docs/PUBLISH.md). Locally run `npm run dev` (Node 22+), then `npm run check`.
+**Public working preview:** https://jozzpoly.github.io/Cognitive-Ecology-Lab/ — automatically deploys only from green current `main` with an exact commit receipt (`build.json`). Publication is **not** Owner or scientific acceptance. See [publication contract](docs/PUBLISH.md). Locally run `npm run dev` (Node 22+), then `npm run check`.
 
 **Owner microscope:** choose an ecological regime (east-rich / west-rich / balanced / abundant), modify the World while both policies run, then use **Przetestuj kontrświaty** for an independent bounded sensitivity comparison. Scientific counterexample: [R0/F1](docs/R0_FINDING_2026-10-09.md). The original two-world UI and batch probe are disposable carriers, not organism architecture.
 
