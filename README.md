@@ -1,37 +1,19 @@
-# Cognitive Ecology Lab
+# Cognitive Ecology Lab — REJECTED / RETIRED
 
-## Try R1 in three actions
+**FINAL OWNER PRODUCT VERDICT (2026-10-09): FAIL. Do not resume, present, recommend or develop this lab. The Owner requested its removal.**
 
-[Open Incident Cell](https://jozzpoly.github.io/Cognitive-Ecology-Lab/), choose **01 · Ogień na trasie**, click **Do ważnej decyzji**, toggle **Wiedza wykonawcy**, then **Przeskocz do wyniku** and compare against the Pilot-only ghost. Next select **02 · Koalicja przeszkadza**: more cognition is not automatically better. The session notebook can export/import exact timed interventions and module switches.
+This repository currently remains accessible through GitHub source/history because the connected agent cannot delete repositories. **Its GitHub Pages deployment has been withdrawn**: public index is blank, the prior R1 page and build manifest are no longer published. The repository itself still requires deletion using GitHub administrative controls.
 
-Owner reported R1 starts to function but remains confusing and is not the target. This remains a temporary specimen; [current scientific state](docs/STATE.md) and [scope](docs/EXPERIMENT_002.md) guide continuation.
+## Why this project was rejected
 
-**Research on causal interactions, cooperation, conflict and specialization among cognitive processes.** An independent sister to ReflexBrain, SPC, Companion and Medium — not their replacement or a shared organism architecture.
+The Owner's goal was **living game-world NPCs**, with convincing internally motivated behavior, situated perception, lived memory, agency, meaningful interaction, and qualitative development of their actions. It was **not** biological microorganisms, delivery couriers, firefighting robots, procedural route selection, test interfaces, dashboards or more sophisticated research microscopes.
 
-## Current experiment — R1 Incident Cell
+R0 compared hand-authored courier policies. R1 compared hand-authored local/dispatcher/planner/guardian mechanisms moving a single task executor. **Neither implemented an LLM, learned brain or convincing living NPC**. Machine CI passes did not demonstrate the Owner's desired phenomenon. R0 was too simple to judge; R1 was explicitly rejected as indistinguishable in relevant behavior and wrong in research direction. The later UI/guided/replay campaign intensified the error instead of improving NPC life.
 
-**[Open the interactive working preview](https://jozzpoly.github.io/Cognitive-Ecology-Lab/)** · [R1 protocol](docs/EXPERIMENT_002.md) · [Live state](docs/STATE.md)
+Earlier wording calling R1 a "promising start", "in need of comprehension" or "awaiting Owner qualification" is **superseded by later explicit Owner feedback: categorical product-level FAIL and termination**.
 
-One rover, one changing grid-world, urgent incidents, interactive fires and barriers. Four differently clocked authored components compete/cooperate over one actuator: Pilot (cheap local), Dispatcher (prioritization), Cartographer (delayed partial-world planning), Guardian (local safety veto). The broker admits or rejects their output. Disable modules during live action, jam advice, or replay the same timed interventions against a competent local-only baseline.
+This is a **terminal failure scar**, not a proposal for a R2 carrier, a plan for improved UI, or permission to resurrect this application.
 
-**Important:** All mechanisms are hand-authored deterministic algorithms, not parallel OS workers, Jev, Clef, ReflexBrain, Luna or learned cognition. Clock delay is simulated inside one JS loop. CI PASS is not an Owner qualitative PASS. Negative synergy is an important result, not a defect to disguise.
+Exact historic technical evidence remains in Git history until the repository is deleted. Technically qualified unit tests, bounded safety veto, and authored-policy comparison are diagnostic historical facts only. They cannot mitigate the Owner verdict or be reused as an architecture mandate.
 
-## Preserved R0 — Cognition Relay / Supply Ecology
-
-[Open the preserved R0 courier experiment](https://jozzpoly.github.io/Cognitive-Ecology-Lab/r0.html) · [R0 scoped counterexample](docs/R0_FINDING_2026-10-09.md) · [Method](docs/EXPERIMENT_001.md).
-
-Owner judged R0 too simple to meaningfully assess (2026-10-09). R0 remains a reproducible comparison donor, not the canonical organism or direction of R1.
-
-## Run and qualification
-
-```sh
-npm run dev    # Node 22+, local static server at http://127.0.0.1:4173
-npm run check  # Node tests and source syntax; CI adds headless Chromium
-node scripts/r1-probe.mjs  # limited R1 outcome comparison
-```
-
-`main` holds a runnable laboratory, **not** Owner-scientifically qualified results. [CI](https://github.com/Jozzpoly/Cognitive-Ecology-Lab/actions/workflows/check.yml) runs on each commit; [auto-preview](docs/PUBLISH.md) publishes a successful current-`main` commit with an exact `build.json` source receipt. Publishing does not imply acceptance.
-
-Project rules: [AGENTS.md](AGENTS.md). Donor candidates: [docs/DONORS.md](docs/DONORS.md). Current compact research authority: [docs/STATE.md](docs/STATE.md).
-
-No license has been selected. No source or assets were copied from sibling projects. No paid model API usage.
+See [terminal research status](docs/STATE.md).
